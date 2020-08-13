@@ -1,0 +1,38 @@
+name: Deploy to Kubernetess
+on:
+  push:
+    paths:
+      - 'awm-webapp/**'
+      - '.github/**'
+jobs:
+  deploy:
+    name: Build Push Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD	}}
+      - name: Build Image
+        run:
+          docker build  -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REGISTRY_URL }}:${{ github.sha }}
+          awm-webapp
+      - name: Push Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REGISTRY_URL }}:${{ github.sha }}
+      - name: Install doctl
+        run:
+          cd ~ && curl -sL
+          https://github.com/digitalocean/doctl/releases/download/v1.46.0/doctl-1.46.0-linux-amd64.tar.gz | tar -xzv
+      - name: DigitalOcean auth
+        run: ~/doctl auth init -t ${{secrets.DIGITALOCEAN_TOKEN}}
+      - name: Set Kubeconfig
+        run: ~/doctl kubernetes cluster kubeconfig save ${{secrets.CLUSTER_NAME}}
+      - name: Get Kubeconfig
+        run: cat ~/.kube/config
+      - name: Set Image Tag
+        run: sed -i 's|GITHUB_SHA|${{ github.sha }}|' awm-webapp/k8s/deployment.yml
+      - name: Check yaml file
+        run: grep -E "image" awm-webapp/k8s/deployment.yml
+      - name: Apply yaml file
+        run: kubectl apply -f awm-webapp/k8s/deployment.yml
+      - name: Check result
+        run: kubectl get all

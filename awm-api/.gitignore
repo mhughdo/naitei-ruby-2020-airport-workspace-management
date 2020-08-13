@@ -30,3 +30,24 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+config/database.yml
+
+public/packs
+public/packs-test
+node_modules
+yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+test
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml
+
+app/**/.DS_Store
+.DS_Store
+
+# Ignore application configuration
+config/application.yml
