@@ -1,6 +1,14 @@
 name: Rails CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'awm-api/**'
+      - '.github/**'
+  pull_request:
+    paths:
+      - 'awm-api/**'
+      - '.github/**'
 
 jobs:
   CI:
@@ -12,11 +20,13 @@ jobs:
       - name: Install bundler
         run: |
           cd awm-api
-          bundle install
+          bundle install --with development
       - name: Rubocop
         run: cd awm-api && bundle exec rubocop
       - name: Rails Best Practices
-        run: cd awm-api && bundle exec rails_best_practices -e "db/schema.rb,db/migrate,vendor,app/models/application_record.rb"
+        run:
+          cd awm-api && bundle exec rails_best_practices -e
+          "db/schema.rb,db/migrate,vendor,app/models/application_record.rb"
       - name: Rpec
         run: cd awm-api && bundle exec rspec --format documentation
       - name: reek
