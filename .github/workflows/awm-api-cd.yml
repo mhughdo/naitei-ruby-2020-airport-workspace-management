@@ -1,12 +1,14 @@
-name: Deploy AWM_WEBAPP to Kubernetess
+name: Deploy AWM-API to Kubernetess
 on:
   push:
+    branches:
+      - master
     paths:
-      - "awm-webapp/**"
-      - ".github/awm-webapp-cd.yml"
+      - "awm-api/**"
+      - ".github/awm-api-cd.yml"
 jobs:
   deploy:
-    name: AWM Webapp Deployment
+    name: AWM API Deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,10 +16,10 @@ jobs:
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD	}}
       - name: Build Image
         run:
-          docker build  -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_WEBAPP_REGISTRY_URL }}:${{ github.sha }}
+          docker build  -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_API_REGISTRY_URL }}:${{ github.sha }}
           awm-webapp
       - name: Push Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_WEBAPP_REGISTRY_URL }}:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_API_REGISTRY_URL }}:${{ github.sha }}
       - name: Install doctl
         run: cd ~ && curl -sL
           https://github.com/digitalocean/doctl/releases/download/v1.46.0/doctl-1.46.0-linux-amd64.tar.gz | tar -xzv
@@ -28,10 +30,10 @@ jobs:
       - name: Get Kubeconfig
         run: cat ~/.kube/config
       - name: Set Image Tag
-        run: sed -i 's|GITHUB_SHA|${{ github.sha }}|' awm-webapp/k8s/deployment.yml
+        run: sed -i 's|GITHUB_SHA|${{ github.sha }}|' awm-api/k8s/deployment.yml
       - name: Check yaml file
-        run: grep -E "image" awm-webapp/k8s/deployment.yml
+        run: grep -E "image" awm-api/k8s/deployment.yml
       - name: Apply yaml file
-        run: kubectl apply -f awm-webapp/k8s/deployment.yml
+        run: kubectl apply -f awm-api/k8s/deployment.yml
       - name: Check result
         run: kubectl get all
