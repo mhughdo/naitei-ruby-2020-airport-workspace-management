@@ -28,5 +28,3 @@ jobs:
           "db/schema.rb,db/migrate,vendor,app/models/application_record.rb"
       - name: Rpec
         run: cd awm-api && bundle exec rspec --format documentation
-      - name: reek
-        run: cd awm-api && bundle exec reek
