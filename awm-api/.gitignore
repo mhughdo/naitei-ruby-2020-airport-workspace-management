@@ -45,9 +45,14 @@ test
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+.env.development.local
 
 app/**/.DS_Store
 .DS_Store
 
 # Ignore application configuration
 config/application.yml
+
+spec/*
+!spec/spec_helper.rb
+!spec/rails_helper.rb
