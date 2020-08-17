@@ -3,7 +3,7 @@ class CreateUnits < ActiveRecord::Migration[6.0]
     create_table :units do |t|
       t.string :name
       t.string :description
-      t.boolean :disabled, default: false
+      t.boolean :active, default: true
       
       t.timestamps
     end

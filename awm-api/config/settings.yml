@@ -22,3 +22,4 @@ validations:
       max_length: 100
     content:
       max_length: 200
+expire_token_time: 20
