@@ -1,10 +1,9 @@
 class Shift < ApplicationRecord
-  has_many :users, dependent: :restrict
+  has_many :users, dependent: :nullify
 
   validates :time_start, presence: true,
     allow_nil: false
   validates :time_end, presence: true,
     allow_nil: false
-  validates :disabled, presence: true,
-    inclusion: {in: [true, false]}
+  validates :active, inclusion: {presence: true, in: [true, false]}
 end

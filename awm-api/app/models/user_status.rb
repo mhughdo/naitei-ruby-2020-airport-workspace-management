@@ -1,7 +1,6 @@
 class UserStatus < ApplicationRecord
-  has_many :users, dependent: :restrict
+  has_many :users, dependent: :nullify
 
   validates :name, presence: true, uniqueness: true, allow_nil: true
-  validates :disabled, presence: true,
-    inclusion: {in: [true, false]}
+  validates :active, inclusion: {presence: true, in: [true, false]}
 end

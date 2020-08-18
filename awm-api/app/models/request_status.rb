@@ -1,9 +1,8 @@
 class RequestStatus < ApplicationRecord
-  has_many :requests, dependent: :restrict
+  has_many :requests, dependent: :nullify
 
   validates :name, presence: true,
     allow_nil: false,
     uniqueness: true
-  validates :disabled, presence: true,
-    inclusion: {in: [true, false]}
+  validates :active, inclusion: {presence: true, in: [true, false]}
 end

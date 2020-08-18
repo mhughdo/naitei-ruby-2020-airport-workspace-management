@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   VALID_EMAIL_REGEX = Settings.validations.user.email.regex
+  PARAMS = %i(name email password password_confirmation gender_id shift_id position_id unit_id user_status_id).freeze
+  LOGIN_PARAMS = %i(email password).freeze
 
   belongs_to :shift
   belongs_to :position
@@ -30,16 +32,17 @@ class User < ApplicationRecord
     length: {maximum: Settings.validations.user.email.max_length},
     format: {with: VALID_EMAIL_REGEX},
     uniqueness:  {case_sensitive: false}
-  validates :password, presence: true,
-    allow_nil: true,
-    length: {minimum: Settings.validations.user.password.min_length}
   validates :address, presence: true,
     allow_nil: true,
-    length: {max_length: Settings.validations.user.address.max_length}
+    length: {maximum: Settings.validations.user.address.max_length}
 
   before_save :downcase_email
 
   has_secure_password
+
+  def self.create_user user_params
+    User.create user_params
+  end
 
   private
 

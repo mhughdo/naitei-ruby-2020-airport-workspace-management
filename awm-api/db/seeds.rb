@@ -5,3 +5,22 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Gender.create(name: 'Male')
+Gender.create(name: 'Female')
+
+Position.create(name: 'Employee')
+Position.create(name: 'Manager')
+Position.create(name: 'Admin')
+
+RequestStatus.create(name: 'Absence')
+
+Shift.create(time_start: 1, time_end: 9)
+Shift.create(time_start: 9, time_end: 17)
+
+UserStatus.create(name: 'Pending')
+UserStatus.create(name: 'Active')
+UserStatus.create(name: 'Resignation')
+
+Unit.create(name: '1', description: 'blabla')
+Unit.create(name: '2', description: 'blabla')

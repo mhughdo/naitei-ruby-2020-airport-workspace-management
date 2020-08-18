@@ -15,7 +15,7 @@ jobs:
       - name: Build Image
         run:
           DOCKER_BUILDKIT=1 docker build  -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_API_REGISTRY_URL }}:${{ github.sha }}
-          awm-webapp
+          awm-api
       - name: Push Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_API_REGISTRY_URL }}:${{ github.sha }}
       - name: Install doctl

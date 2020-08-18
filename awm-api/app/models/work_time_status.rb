@@ -1,7 +1,6 @@
 class WorkTimeStatus < ApplicationRecord
-  has_many :work_times, dependent: :restrict
+  has_many :work_times, dependent: :nullify
 
   validates :name, presence: true, uniqueness: true, allow_nil: true
-  validates :disabled, presence: true,
-    inclusion: {in: [true, false]}
+  validates :active, inclusion: {presence: true, in: [true, false]}
 end
