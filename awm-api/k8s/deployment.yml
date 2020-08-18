@@ -16,10 +16,10 @@ spec:
           image: hughdo/awm-api:GITHUB_SHA
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: '256Mi'
+              cpu: '250m'
             limits:
-              memory: "1.5Gi"
+              memory: '1.5Gi'
               cpu: 1
           env:
             - name: DB_NAME
@@ -100,17 +100,16 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    # nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   tls:
     - hosts:
         - awm.hughdo.dev
-      secretName: awm-api-tls
+      secretName: awm-webapp-tls
   rules:
     - host: awm.hughdo.dev
       http:
         paths:
-          - path: /api(.*)
+          - path: /api/v1
             backend:
               serviceName: awm-api-svc
-              servicePort: 4000
+              servicePort: 3000
