@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.valid?
       token = encode_token({user_id: @user.id})
       set_cookie token
-      render_success_response(:created, {token: token}, "Signup successfully")
+      render_success_response(:created, {token: token}, I18n.t("success.signup"))
     else
       render_fail_response(:unauthorized, @user.errors.full_messages)
     end

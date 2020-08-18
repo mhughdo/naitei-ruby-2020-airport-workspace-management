@@ -1,0 +1,9 @@
+vi:
+  errors:
+    email_not_found: Không tìm thấy email
+    incorrect_password: Sai mật khẩu
+  success:
+    login: Đăng nhập thành công
+    signup: Đăng ký thành công
+  request:
+    login: Hãy đăng nhập trước
