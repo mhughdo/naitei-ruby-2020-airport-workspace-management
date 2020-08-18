@@ -2,6 +2,9 @@ class User < ApplicationRecord
   VALID_EMAIL_REGEX = Settings.validations.user.email.regex
   PARAMS = %i(name email password password_confirmation gender_id shift_id position_id unit_id user_status_id).freeze
   LOGIN_PARAMS = %i(email password).freeze
+  PASSWORD_RESET_PARAMS = %i(email password password_confirmation).freeze
+
+  attr_accessor :reset_token
 
   belongs_to :shift
   belongs_to :position
@@ -26,6 +29,11 @@ class User < ApplicationRecord
   has_many :approved_requests, through: :passive_notifications, source: :approver
   has_many :requests, through: :active_notifications, source: :requester
 
+  delegate :name, to: :gender, prefix: true
+  delegate :name, to: :position, prefix: true
+  delegate :name, to: :unit, prefix: true
+  delegate :name, to: :user_status, prefix: true
+
   validates :name, presence: true,
     length: {maximum: Settings.validations.user.name.max_length}
   validates :email, presence: true,
@@ -40,8 +48,40 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  def self.create_user user_params
-    User.create user_params
+  class << self
+    def digest string
+      cost =
+        if ActiveModel::SecurePassword.min_cost
+          BCrypt::Engine::MIN_COST
+        else
+          BCrypt::Engine.cost
+        end
+      BCrypt::Password.create(string, cost: cost)
+    end
+
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
+  end
+
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now
+  end
+
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  def password_reset_expired?
+    reset_sent_at < Settings.expire_token_time.hours.ago
+  end
+
+  def valid_reset_password? token
+    digest = send :reset_digest
+    return false unless digest
+
+    BCrypt::Password.new(digest).is_password? token
   end
 
   private
