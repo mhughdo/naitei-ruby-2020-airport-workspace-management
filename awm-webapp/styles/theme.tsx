@@ -1,6 +1,9 @@
 export const theme = {
   breakpoints: ['640px', '768px', '1024px', '1280px'],
   space: [0, 4, 8, 12, 16, 24, 32, 64, 128, 256, 512],
+  sizes: {
+    container: '1200px',
+  },
   fonts: {
     body:
       'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
@@ -197,6 +200,14 @@ export const theme = {
       ':hover': {
         color: 'primary',
       },
+    },
+  },
+  icons: {
+    countryFlag: {
+      width: '24px',
+      height: '24px',
+      verticalAlign: 'middle',
+      cursor: 'pointer',
     },
   },
   styles: {

@@ -16,8 +16,11 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
-        <Head />
+      <Html lang='en'>
+        <Head>
+          <meta name='format-detection' content='telephone=no' />
+          <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+        </Head>
         <body>
           <InitializeColorMode />
           <Main />

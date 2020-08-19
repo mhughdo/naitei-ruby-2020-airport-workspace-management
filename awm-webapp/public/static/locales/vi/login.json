@@ -1,0 +1,9 @@
+{
+  "title": "Đăng nhập vào AWM",
+  "login": "Đăng nhập",
+  "forgot_password": "Quên mật khẩu",
+  "remember_me": "Ghi nhớ đăng nhập",
+  "required_input": "Xin vui lòng nhập {{inputName}}",
+  "username": "Tài khoản",
+  "password": "Mật khẩu"
+}
