@@ -1,0 +1,9 @@
+{
+  "title": "Sign in to AWM",
+  "login": "Login",
+  "forgot_password": "Forgot password",
+  "remember_me": "Remember me",
+  "required_input": "Please input your {{inputName}}",
+  "username": "Username",
+  "password": "Password"
+}

@@ -1,37 +1,33 @@
 /** @jsx jsx */
-import {jsx, Image, Flex, Box} from 'theme-ui'
-import {Layout, Menu, Avatar, Dropdown} from 'antd'
+import {jsx, Image, Flex, Box, Text} from 'theme-ui'
+import {Layout, Menu, Avatar, Dropdown, Badge} from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
   DownOutlined,
   UpOutlined,
+  BellOutlined,
+  CalendarOutlined,
+  ProjectOutlined,
+  CopyOutlined,
+  SettingOutlined,
 } from '@ant-design/icons'
 import React, {useState} from 'react'
+import {WithTranslation, withTranslation} from 'i18n'
+import UKFLag from '../assets/uk.svg'
+import VNFLag from '../assets/vietnam.svg'
 
 const {Header, Sider, Content} = Layout
 
-const DropdownMenuItem = (
-  <Menu>
-    <Menu.Item key='0'>
-      <a href='#'>1st menu item</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key='1'>
-      <a href=''>2nd menu item</a>
-    </Menu.Item>
-    <Menu.Item key='3'>
-      <a href='#'>3rd menu items</a>
-    </Menu.Item>
-  </Menu>
-)
-
-const LayoutComponent: React.FunctionComponent = () => {
+const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
+  t,
+  children,
+  i18n,
+}) => {
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false)
+  const [language, setLanguage] = useState<string>(i18n.language)
+
   const toggle = () => {
     setCollapsed(!collapsed)
   }
@@ -40,6 +36,53 @@ const LayoutComponent: React.FunctionComponent = () => {
     setDropdownVisible(visible)
   }
 
+  const changeLocale = () => {
+    const newLanguage = language === 'vi' ? 'en' : 'vi'
+    setLanguage(newLanguage)
+    i18n.changeLanguage(newLanguage)
+  }
+
+  const DropdownMenuItem = (
+    <Menu>
+      <Menu.Item key='info'>
+        <a href='#'>
+          <Flex>
+            <Avatar
+              sx={{
+                mr: 2,
+                mt: 1,
+              }}
+              src='https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+            />
+            <Box>
+              <Text
+                sx={{
+                  fontSize: 2,
+                }}>
+                Hugh do
+              </Text>
+              <Text
+                sx={{
+                  fontSize: 0,
+                }}>
+                do.manh.hungb@sun-asterisk.com
+              </Text>
+            </Box>
+          </Flex>
+        </a>
+      </Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key='my_profile'>
+        <a href='#'>{t('my_profile')}</a>
+      </Menu.Item>
+      <Menu.Item key='my_profile'>
+        <a href='#'>{t('settings')}</a>
+      </Menu.Item>
+      <Menu.Item key='sign_out'>
+        <a href='#'>{t('sign_out')}</a>
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <Layout
       sx={{
@@ -48,30 +91,31 @@ const LayoutComponent: React.FunctionComponent = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <Box
           sx={{
-            // height: '32px',
-            // background: 'rgba(255, 255, 255, 0.2)',
-            // bg: 'white',
             margin: '16px',
           }}>
           <Image src='/logo.png' />
         </Box>
-        <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>
-          <Menu.Item key='1' icon={<UserOutlined />}>
-            nav 1
+        <Menu
+          theme='dark'
+          mode='inline'
+          defaultSelectedKeys={['working_calendar']}>
+          <Menu.Item key='working_calendar' icon={<CalendarOutlined />}>
+            {t('working_calendar')}
           </Menu.Item>
-          <Menu.Item key='2' icon={<VideoCameraOutlined />}>
-            nav 2
+          <Menu.Item key='stats' icon={<ProjectOutlined />}>
+            {t('stats')}
           </Menu.Item>
-          <Menu.Item key='3' icon={<UploadOutlined />}>
-            nav 3
+          <Menu.Item key='3' icon={<CopyOutlined />}>
+            {t('req')}
           </Menu.Item>
         </Menu>
       </Sider>
       <Layout>
         <Header
           sx={{
-            bg: (theme) => theme.colors.gray[1],
+            bg: 'white',
             px: 4,
+            boxShadow: 'sm',
           }}>
           <Flex
             sx={{
@@ -92,21 +136,71 @@ const LayoutComponent: React.FunctionComponent = () => {
                 onClick={toggle}
               />
             )}
-            <Box>
+            <Flex
+              sx={{
+                alignItems: 'center',
+              }}>
+              <Box>
+                <Badge count={5}>
+                  <BellOutlined
+                    sx={{
+                      fontSize: 5,
+                      verticalAlign: 'middle',
+                    }}
+                  />
+                </Badge>
+              </Box>
+              <Box
+                sx={{
+                  ml: 5,
+                }}>
+                <SettingOutlined
+                  sx={{
+                    fontSize: 5,
+                    verticalAlign: 'middle',
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  ml: 5,
+                }}>
+                {language === 'vi' ? (
+                  <VNFLag
+                    sx={{
+                      variant: 'icons.countryFlag',
+                    }}
+                  />
+                ) : (
+                  <UKFLag
+                    sx={{
+                      variant: 'icons.countryFlag',
+                    }}
+                  />
+                )}
+              </Box>
               <Dropdown
                 arrow
                 overlay={DropdownMenuItem}
                 trigger={['click']}
-                onVisibleChange={handleDropdownVisibleChange}>
+                onVisibleChange={handleDropdownVisibleChange}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
                 <Box
                   sx={{
                     fontWeight: 'bold',
                     cursor: 'pointer',
+                    ml: 5,
                   }}>
-                  <Avatar src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png' />
+                  <Avatar
+                    src='https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+                    size='large'
+                  />
                   {dropdownVisible ? (
                     <UpOutlined
-                      style={{
+                      sx={{
                         fontSize: '12px',
                         marginLeft: '8px',
                         fontWeight: 'bold',
@@ -115,7 +209,7 @@ const LayoutComponent: React.FunctionComponent = () => {
                     />
                   ) : (
                     <DownOutlined
-                      style={{
+                      sx={{
                         fontSize: '12px',
                         marginLeft: '8px',
                         fontWeight: 'bold',
@@ -125,7 +219,7 @@ const LayoutComponent: React.FunctionComponent = () => {
                   )}
                 </Box>
               </Dropdown>
-            </Box>
+            </Flex>
           </Flex>
         </Header>
         <Content
@@ -135,11 +229,11 @@ const LayoutComponent: React.FunctionComponent = () => {
             mx: 4,
             p: 5,
           }}>
-          Content
+          {children}
         </Content>
       </Layout>
     </Layout>
   )
 }
 
-export default LayoutComponent
+export default withTranslation('layout')(LayoutComponent)
