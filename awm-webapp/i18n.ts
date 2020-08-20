@@ -1,4 +1,5 @@
 import NextI18Next, {WithTranslation as WithTranslationType} from 'next-i18next'
+import path from 'path'
 
 export const languages = ['en', 'vi']
 
@@ -7,6 +8,12 @@ const NextI18NextInstance = new NextI18Next({
   otherLanguages: ['vi'],
   localeSubpaths: {
     vi: 'vi',
+  },
+  backend: {
+    loadPath:
+      typeof window === 'undefined'
+        ? path.join(process.cwd(), 'public/static/locales/{{lng}}/{{ns}}.json')
+        : `/static/locales/{{lng}}/{{ns}}.json`,
   },
   serverLanguageDetection: false,
   browserLanguageDetection: false,
