@@ -1,16 +1,11 @@
 module ResponseHelper
-  def render_success_response status, data, message
-    render json: {
-      success: true,
-      data: data,
-      message: message
-    }, status: status
+  def render_success_response p_status, format, data, message
+    status p_status
+    present data, with: format, success: true, message: message
   end
 
-  def render_fail_response status, errors
-    render json: {
-      success: false,
-      errors: errors
-    }, status: status
+  def render_notification p_status, notification
+    status p_status
+    present Object.new, with: NotificationFormat, message: notification
   end
 end

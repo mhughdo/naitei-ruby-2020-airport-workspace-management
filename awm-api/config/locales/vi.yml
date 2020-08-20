@@ -1,9 +1,26 @@
 vi:
   errors:
+    something_wrong: Đã xảy ra lỗi
     email_not_found: Không tìm thấy email
+    user_not_found: Không tìm thấy user
     incorrect_password: Sai mật khẩu
+    blank_password: Mật khẩu không thể để trống
+    incorrect_password_confirm: Xác nhận mật khẩu không khớp
+    invalid_reset_password_token: Token thay đổi mật khẩu không hợp lệ
+    expired_reset_password_token: Token thay đổi mật khẩu đã hết hạn
+    required: không được bỏ trống
   success:
     login: Đăng nhập thành công
     signup: Đăng ký thành công
+    reset_password: Thay đổi mật khẩu thành công
+    sent_reset_password_mail: Email thay đổi mật khẩu đã được gửi đến mail của bạn
+    valid_reset_password_token: Token thay đổi mật khẩu hợp lệ
   request:
     login: Hãy đăng nhập trước
+  user_mailer:
+    reset_password_title: Thay đổi mật khẩu tài khoản AWM
+    password_reset:
+      title: Thay đổi mật khẩu
+      description: Để thay đổi mật khẩu hãy nhấn vào link phía dưới
+      expiration: Đường link sẽ hết hạn trong 20 tiếng
+      warning: Nếu bạn không yêu cầu thay đổi mật khẩu, hãy bỏ qua email này
