@@ -1,4 +1,4 @@
-import NextI18Next, {WithTranslation} from 'next-i18next'
+import NextI18Next, {WithTranslation as WithTranslationType} from 'next-i18next'
 
 export const languages = ['en', 'vi']
 
@@ -20,6 +20,6 @@ const NextI18NextInstance = new NextI18Next({
 
 export default NextI18NextInstance
 
-export type WithTranslation = WithTranslation
+export type WithTranslation = WithTranslationType
 
 export const {appWithTranslation, withTranslation, Router} = NextI18NextInstance

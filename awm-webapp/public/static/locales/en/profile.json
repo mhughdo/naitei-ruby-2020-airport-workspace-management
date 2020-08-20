@@ -1,0 +1,10 @@
+{
+  "user_info": "User Infomation",
+  "name": "Name",
+  "phone": "Phone",
+  "gender": "Gender",
+  "birthday": "Birthday",
+  "pos": "Position",
+  "unit": "Unit",
+  "edit": "Edit"
+}
