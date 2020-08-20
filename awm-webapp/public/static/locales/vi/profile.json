@@ -1,0 +1,10 @@
+{
+  "user_info": "Thông tin người dùng",
+  "name": "Tên",
+  "phone": "Điện thoại",
+  "gender": "Giới tính",
+  "birthday": "Ngày sinh",
+  "pos": "Chức vụ",
+  "unit": "Đơn vị",
+  "edit": "Sửa"
+}

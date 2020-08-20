@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import {jsx, Image, Flex, Box, Text} from 'theme-ui'
-import {Layout, Menu, Avatar, Dropdown, Badge} from 'antd'
+import {Layout, Menu, Avatar, Dropdown, Badge, Button} from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -14,8 +14,8 @@ import {
 } from '@ant-design/icons'
 import React, {useState} from 'react'
 import {WithTranslation, withTranslation} from 'i18n'
-import UKFLag from '../assets/uk.svg'
-import VNFLag from '../assets/vietnam.svg'
+import UKFLag from '../assets/svg/uk.svg'
+import VNFLag from '../assets/svg/vietnam.svg'
 
 const {Header, Sider, Content} = Layout
 
@@ -85,6 +85,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
   )
   return (
     <Layout
+      hasSider
       sx={{
         minHeight: '100vh',
       }}>
@@ -166,17 +167,31 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                   ml: 5,
                 }}>
                 {language === 'vi' ? (
-                  <VNFLag
+                  <Button
+                    type='link'
+                    onClick={changeLocale}
                     sx={{
-                      variant: 'icons.countryFlag',
-                    }}
-                  />
+                      p: 0,
+                    }}>
+                    <VNFLag
+                      sx={{
+                        variant: 'icons.countryFlag',
+                      }}
+                    />
+                  </Button>
                 ) : (
-                  <UKFLag
+                  <Button
+                    type='link'
+                    onClick={changeLocale}
                     sx={{
-                      variant: 'icons.countryFlag',
-                    }}
-                  />
+                      p: 0,
+                    }}>
+                    <UKFLag
+                      sx={{
+                        variant: 'icons.countryFlag',
+                      }}
+                    />
+                  </Button>
                 )}
               </Box>
               <Dropdown
@@ -224,7 +239,6 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
         </Header>
         <Content
           sx={{
-            background: 'white',
             mt: 5,
             mx: 4,
             p: 5,

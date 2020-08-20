@@ -1,7 +1,7 @@
 import 'styles/antd.less'
 import {ThemeProvider} from 'theme-ui'
 import {theme} from 'styles/theme'
-import App, {AppProps, AppContext} from 'next/app'
+import App, {AppContext, AppProps} from 'next/app'
 import Layout from 'components/Layout'
 import {ConfigProvider} from 'antd'
 
@@ -22,12 +22,12 @@ function getAntdLocale(language: string): AntdLocale {
 }
 
 function MyApp({Component, pageProps, i18n}: AppProps & WithTranslation): any {
-  console.log(Component.name)
+  const componentName = Component.displayName || Component.name
 
   return (
     <ThemeProvider theme={theme}>
       <ConfigProvider locale={getAntdLocale(i18n.language)}>
-        {Layoutless.includes(Component.name) ? (
+        {Layoutless.includes(String(componentName)) ? (
           <Component {...pageProps} />
         ) : (
           <Layout>

@@ -10,4 +10,6 @@ const PasswordReset: React.FC = () => {
   )
 }
 
+PasswordReset.displayName = 'PasswordReset'
+
 export default PasswordReset
