@@ -3,7 +3,7 @@ class ResetPasswordApi < ApiV1
   namespace :auth do
     namespace :password do
       before do
-        @user = get_user
+        @user = get_user_by_email
       end
 
       desc "Create request to reset password"

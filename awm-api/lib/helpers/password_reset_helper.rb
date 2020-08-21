@@ -1,10 +1,4 @@
 module PasswordResetHelper
-  def get_user
-    user = User.find_by email: params[:email]
-    error!(I18n.t("errors.user_not_found"), :not_found) unless user
-    user
-  end
-
   def check_expiration user
     is_expired = user.password_reset_expired?
     error!(I18n.t("errors.expired_reset_password_token"), :unauthorized) if is_expired

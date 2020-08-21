@@ -1,4 +1,4 @@
-class UserFormat < Grape::Entity
+class PrivateUserFormat < Grape::Entity
   expose :id
   expose :email
   expose :name

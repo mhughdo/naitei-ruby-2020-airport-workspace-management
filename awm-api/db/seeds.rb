@@ -22,5 +22,5 @@ UserStatus.create(name: 'Pending')
 UserStatus.create(name: 'Active')
 UserStatus.create(name: 'Resignation')
 
-Unit.create(name: '1', description: 'blabla')
-Unit.create(name: '2', description: 'blabla')
+Unit.create(name: 'Handico', description: 'blabla')
+Unit.create(name: 'BA', description: 'blabla')
