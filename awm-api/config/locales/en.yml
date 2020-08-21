@@ -3,20 +3,25 @@ en:
     something_wrong: Something went wrong
     email_not_found: Email not found
     user_not_found: User not found
+    auth_token_not_found: Authorization token not found
     incorrect_password: Password is incorrect
     blank_password: Password can not be blank
     incorrect_password_confirm: Password and confirmation do not match
     invalid_reset_password_token: Invalid reset password token
     expired_reset_password_token: Reset password token was expired
     required: is required
+    not_allowed: not allowed to do this action
+    update: Update failed
   success:
+    common: Successful
     login: Login successfully
     signup: Signup successfully
+    update: Update successful
     reset_password: Reset password successfully
     sent_reset_password_mail: Reset password email was sent
     valid_reset_password_token: Valid reset password token
   request:
-    login: Please log in
+    login: User not found please log in
   user_mailer:
     reset_password_title: Reset password AWM account
     password_reset:

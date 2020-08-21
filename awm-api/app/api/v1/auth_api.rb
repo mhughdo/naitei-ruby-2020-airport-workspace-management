@@ -1,7 +1,7 @@
 class AuthApi < ApiV1
   namespace :auth do
     before do
-      @user = get_user
+      @user = get_user_by_email
     end
 
     desc "Log in"

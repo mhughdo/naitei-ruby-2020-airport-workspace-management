@@ -27,16 +27,44 @@ module AuthHelper
   def current_user
     return unless decoded_token
 
-    user_id = decoded_token[0][:user_id]
-    @user = User.find_by id: user_id
+    user_id = decoded_token[0]["user_id"]
+    user = User.find_by id: user_id
+    error!(I18n.t("request.login"), :unauthorized) unless user
+    user
   end
 
   def auth_header
-    request.headers["Authorization"]
+    token = request.headers["Authorization"] || cookies[:token]
+    error!(I18n.t("errors.auth_token_not_found"), :bad_request) unless token
+    token
   end
 
-  def authorized
+  def authenticated
     error!(I18n.t("request.login"), :unauthorized) unless logged_in?
+  end
+
+  def authorized_one_of positions
+    is_authorized = false
+    positions.each do |position|
+      if current_user.position_name == position
+        is_authorized = true
+        break
+      end
+    end
+    # error!(I18n.t("errors.not_allowed"), :bad_request) unless is_authorized
+    is_authorized
+  end
+
+  def authorized_unit_one_of units
+    is_authorized = false
+    units.each do |unit|
+      if current_user.unit_name == unit
+        is_authorized = true
+        break
+      end
+    end
+    # error!(I18n.t("errors.not_allowed"), :bad_request) unless is_authorized
+    is_authorized
   end
 
   private
