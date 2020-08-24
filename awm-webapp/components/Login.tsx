@@ -1,16 +1,56 @@
 /** @jsx jsx */
 import {jsx, Box, Heading, Flex} from 'theme-ui'
-import {Form, Input, Button, Checkbox} from 'antd'
+import {Form, Input, Button, Checkbox, message} from 'antd'
 import PropTypes from 'prop-types'
 import {NextPage} from 'next'
-import {withTranslation, WithTranslation} from '../i18n'
+import {useAuth} from 'providers/Auth'
+import axios from 'utils/axios'
+import {setCookie} from 'nookies'
+import {useState} from 'react'
+import {Link, Router, withTranslation, WithTranslation} from '../i18n'
 import ForgotPasswordBackground from '../assets/forgot_password_background.jpg'
 import Plane from '../assets/svg/plane.svg'
 
 const LoginComponent: NextPage<WithTranslation> = ({t}) => {
   const [form] = Form.useForm()
-  const onFinish = (values) => {
-    console.log(values)
+  const {setAuth, setAuthenticated} = useAuth()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const onFinish = async (values) => {
+    const {email, password} = values
+    try {
+      setIsLoading(true)
+      const {data} = await axios({
+        url: '/v1/auth/login',
+        method: 'post',
+        data: {
+          email,
+          password,
+        },
+      })
+      setIsLoading(false)
+      if (data) {
+        const {user, token} = data?.data
+        // document.cookie = `token=${token}`
+        setCookie(null, 'token', token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        })
+        setCookie(null, 'auth', JSON.stringify(user), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        })
+        setAuthenticated(true)
+        setAuth(user)
+        Router.push('/')
+      }
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+      if (error?.response?.data.error) {
+        message.error(error.response.data.error)
+      }
+    }
   }
 
   const onFinishFailed = (errorInfo) => {
@@ -87,17 +127,17 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
               layout='vertical'
               form={form}>
               <Form.Item
-                label={t('username')}
-                name='username'
+                label={t('email')}
+                name='email'
                 rules={[
                   {
                     required: true,
                     message: t('required_input', {
-                      inputName: t('username').toLowerCase(),
+                      inputName: t('email').toLowerCase(),
                     }),
                   },
                 ]}>
-                <Input />
+                <Input type='email' />
               </Form.Item>
               <Form.Item
                 label={t('password')}
@@ -121,7 +161,9 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
                     <Checkbox>{t('remember_me')}</Checkbox>
                   </Form.Item>
 
-                  <a href='#'>{t('forgot_password')}</a>
+                  <Link href='/forgot_password' as='/forgot_password'>
+                    <a>{t('forgot_password')}</a>
+                  </Link>
                 </Flex>
               </Form.Item>
               <Form.Item>
@@ -130,6 +172,7 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
                     width: '100%',
                   }}
                   type='primary'
+                  loading={isLoading}
                   htmlType='submit'>
                   {t('login')}
                 </Button>

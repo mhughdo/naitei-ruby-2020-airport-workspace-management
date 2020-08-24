@@ -19,7 +19,7 @@ const NextI18NextInstance = new NextI18Next({
   browserLanguageDetection: false,
   load: 'languageOnly',
   defaultNS: 'common',
-  debug: process.env.NODE_ENV !== 'production',
+  debug: false,
   localePath:
     typeof window === 'undefined' ? 'public/static/locales' : 'static/locales',
   saveMissing: false,
@@ -29,4 +29,9 @@ export default NextI18NextInstance
 
 export type WithTranslation = WithTranslationType
 
-export const {appWithTranslation, withTranslation, Router} = NextI18NextInstance
+export const {
+  appWithTranslation,
+  withTranslation,
+  Router,
+  Link,
+} = NextI18NextInstance

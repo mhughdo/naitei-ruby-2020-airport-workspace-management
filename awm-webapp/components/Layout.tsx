@@ -13,7 +13,8 @@ import {
   SettingOutlined,
 } from '@ant-design/icons'
 import React, {useState} from 'react'
-import {WithTranslation, withTranslation} from 'i18n'
+import {WithTranslation, withTranslation, Link} from 'i18n'
+import {useAuth} from '@providers/Auth'
 import UKFLag from '../assets/svg/uk.svg'
 import VNFLag from '../assets/svg/vietnam.svg'
 
@@ -27,6 +28,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false)
   const [language, setLanguage] = useState<string>(i18n.language)
+  const {auth, logout} = useAuth()
 
   const toggle = () => {
     setCollapsed(!collapsed)
@@ -59,13 +61,13 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                 sx={{
                   fontSize: 2,
                 }}>
-                Hugh do
+                {auth?.name}
               </Text>
               <Text
                 sx={{
                   fontSize: 0,
                 }}>
-                do.manh.hungb@sun-asterisk.com
+                {auth?.email}
               </Text>
             </Box>
           </Flex>
@@ -73,13 +75,34 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key='my_profile'>
-        <a href='#'>{t('my_profile')}</a>
+        <Link
+          href={{
+            pathname: '/users/[id]/profile',
+            query: {
+              slug: auth?.id,
+            },
+          }}
+          as={`/users/${auth?.id}/profile`}>
+          <a>{t('my_profile')}</a>
+        </Link>
       </Menu.Item>
-      <Menu.Item key='my_profile'>
+      <Menu.Item key='settings'>
         <a href='#'>{t('settings')}</a>
       </Menu.Item>
       <Menu.Item key='sign_out'>
-        <a href='#'>{t('sign_out')}</a>
+        <Button
+          type='link'
+          onClick={() => logout()}
+          sx={{
+            p: 0,
+            color: 'rgba(0, 0, 0, 0.65)',
+            height: 'auto',
+            ':hover': {
+              color: 'rgba(0, 0, 0, 0.65)',
+            },
+          }}>
+          {t('sign_out')}
+        </Button>
       </Menu.Item>
     </Menu>
   )
