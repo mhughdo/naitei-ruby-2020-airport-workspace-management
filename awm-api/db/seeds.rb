@@ -36,10 +36,12 @@ User.create(
   email: 'admin@gmail.com',
   password: '123456',
   password_confirmation: '123456',
+  address: 'Ha Noi',
+  phone: '0123456789',
   shift_id: 1,
   position_id: 3,
   unit_id: 2,
   gender_id: 1,
   user_status_id: 2,
-  birthday: 1598224980
+  birthday: Time.now.to_i.to_s << "000"
 )

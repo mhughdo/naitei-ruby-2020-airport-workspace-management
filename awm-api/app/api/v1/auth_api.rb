@@ -15,7 +15,7 @@ class AuthApi < ApiV1
         set_cookie token
         return render_success_response(:ok, AuthFormat, {token: token, user: @user}, I18n.t("success.login"))
       else
-        error!(I18n.t("errors.incorrect_password"), :unauthorized)
+        error!(I18n.t("errors.incorrect_password"), :bad_request)
       end
     end
   end

@@ -5,4 +5,5 @@ class PublicUserFormat < Grape::Entity
   expose :gender_name
   expose :position_name
   expose :unit_name
+  expose :birthday
 end

@@ -5,6 +5,7 @@ class Base < Grape::API
   helpers PasswordResetHelper
   helpers UserHelper
   helpers RequestHelper
+  helpers ParamHelper
 
   before do
     set_locale

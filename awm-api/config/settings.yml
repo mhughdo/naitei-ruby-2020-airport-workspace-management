@@ -23,3 +23,9 @@ validations:
     content:
       max_length: 200
 expire_token_time: 20
+admin_id: 3
+manager_id: 2
+pending_status_id: 1
+approved_status_id: 2
+rejected_status_id: 2
+admin_account_id: 1
