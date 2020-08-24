@@ -6,4 +6,5 @@ class ApiV1 < Grape::API
   mount AuthApi
   mount UserApi
   mount ResetPasswordApi
+  mount RequestApi
 end

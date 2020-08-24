@@ -4,6 +4,7 @@ en:
     email_not_found: Email not found
     user_not_found: User not found
     auth_token_not_found: Authorization token not found
+    request_id_not_found: Request ID not found
     incorrect_password: Password is incorrect
     blank_password: Password can not be blank
     incorrect_password_confirm: Password and confirmation do not match
@@ -12,6 +13,7 @@ en:
     required: is required
     not_allowed: not allowed to do this action
     update: Update failed
+    invalid_user: Invalid user
   success:
     common: Successful
     login: Login successfully
@@ -20,6 +22,7 @@ en:
     reset_password: Reset password successfully
     sent_reset_password_mail: Reset password email was sent
     valid_reset_password_token: Valid reset password token
+    request: Create request successfully
   request:
     login: User not found please log in
   user_mailer:

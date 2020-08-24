@@ -6,6 +6,8 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "config"
 gem "dotenv-rails", require: "dotenv/rails-now"
 gem "dry-logic", "1.0.6"
+gem "dry-schema", "1.5.2"
+gem "dry-validation", "1.5.3"
 gem "grape"
 gem "grape-entity"
 gem "grape_on_rails_routes"

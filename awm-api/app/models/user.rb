@@ -29,9 +29,13 @@ class User < ApplicationRecord
   has_many :approved_requests, through: :passive_notifications, source: :approver
   has_many :requests, through: :active_notifications, source: :requester
 
+  scope :get_manager, ->{where position_id: "2"}
+  scope :get_unit_manager, ->(unit_id){get_manager.where(unit_id: unit_id)[0]}
+
   delegate :name, to: :gender, prefix: true
   delegate :name, to: :position, prefix: true
   delegate :name, to: :unit, prefix: true
+  delegate :name, to: :shift, prefix: true
   delegate :name, to: :user_status, prefix: true
 
   validates :name, presence: true,
@@ -43,6 +47,8 @@ class User < ApplicationRecord
   validates :address, presence: true,
     allow_nil: true,
     length: {maximum: Settings.validations.user.address.max_length}
+  validates :birthday, presence: true,
+    allow_nil: false
 
   before_save :downcase_email
 

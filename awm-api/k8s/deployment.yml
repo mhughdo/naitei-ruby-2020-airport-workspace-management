@@ -16,10 +16,10 @@ spec:
           image: hughdo/awm-api:GITHUB_SHA
           resources:
             requests:
-              memory: '256Mi'
-              cpu: '250m'
+              memory: "256Mi"
+              cpu: "250m"
             limits:
-              memory: '1.5Gi'
+              memory: "1.5Gi"
               cpu: 1
           env:
             - name: DB_NAME
@@ -73,6 +73,11 @@ spec:
                 secretKeyRef:
                   name: awm-mail-secret
                   key: JWT_ALGORITHM
+            - name: RESET_PASSWORD_URL
+              valueFrom:
+                secretKeyRef:
+                  name: awm-mail-secret
+                  key: RESET_PASSWORD_URL
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:

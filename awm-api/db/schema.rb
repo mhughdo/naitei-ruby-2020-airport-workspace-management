@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
   create_table "requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "requester_id"
     t.integer "approver_id"
+    t.integer "absence_day"
     t.string "reason"
     t.string "comment"
     t.bigint "unit_id", null: false
@@ -56,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
   end
 
   create_table "shifts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
     t.integer "time_start"
     t.integer "time_end"
     t.boolean "active", default: true
@@ -81,6 +83,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
+    t.integer "birthday"
     t.string "password_digest"
     t.string "remember_digest"
     t.string "reset_digest"
