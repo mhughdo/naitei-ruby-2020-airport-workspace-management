@@ -4,6 +4,7 @@ vi:
     email_not_found: Không tìm thấy email
     user_not_found: Không tìm thấy user
     auth_token_not_found: Authorization token không được bỏ trống
+    request_id_not_found: Request ID không được bỏ trống
     incorrect_password: Sai mật khẩu
     blank_password: Mật khẩu không thể để trống
     incorrect_password_confirm: Xác nhận mật khẩu không khớp
@@ -12,6 +13,7 @@ vi:
     required: không được bỏ trống
     not_allowed: Không được phép thực hiện
     update: Cập nhật không thành công
+    invalid_user: User không hợp lệ
   success:
     common: Thành công
     login: Đăng nhập thành công
@@ -20,6 +22,7 @@ vi:
     reset_password: Thay đổi mật khẩu thành công
     sent_reset_password_mail: Email thay đổi mật khẩu đã được gửi đến mail của bạn
     valid_reset_password_token: Token thay đổi mật khẩu hợp lệ
+    request: Tạo yêu cầu thành công
   request:
     login: Không tìm thấy user hãy đăng nhập trước
   user_mailer:

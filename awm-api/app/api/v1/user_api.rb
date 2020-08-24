@@ -1,6 +1,7 @@
 class UserApi < ApiV1
+  # rubocop:disable Metrics/BlockLength
   namespace :auth do
-    desc "Sign up"
+    desc "Sign up, only admin can create account"
     params do
       requires :name, type: String, message: I18n.t("errors.required")
       requires :email, type: String, message: I18n.t("errors.required")
@@ -11,9 +12,12 @@ class UserApi < ApiV1
       requires :shift_id, type: Integer, message: I18n.t("errors.required")
       requires :position_id, type: Integer, message: I18n.t("errors.required")
       requires :unit_id, type: Integer, message: I18n.t("errors.required")
-      requires :user_status_id, type: Integer, message: I18n.t("errors.required")
+    end
+    before do
+      error!(I18n.t("errors.not_allowed"), :unauthorized) unless authorized_one_of %w(Admin)
     end
     post "/signup" do
+      params[:user_status_id] = 1
       user = User.create params
       if user.valid?
         token = encode_token({user_id: user.id})
@@ -36,13 +40,12 @@ class UserApi < ApiV1
     end
   end
 
-  # rubocop:disable Metrics/BlockLength
   namespace :users do
     before do
       authenticated
     end
 
-    desc "Only admin and manager can get user information"
+    desc "Only admin and BA can get all user information"
     get "/:id" do
       user = get_user_by_id
       is_allowed = authorized_one_of(%w(Admin)) || authorized_unit_one_of(%w(BA))
@@ -63,10 +66,10 @@ class UserApi < ApiV1
       optional :gender_id, type: String, allow_blank: false
     end
     put "/:id/update" do
-      authorized_unit_one_of %w(BA)
+      error!(I18n.t("errors.not_allowed"), :unauthorized) unless authorized_unit_one_of %w(BA)
       get_user_by_id
-      if user = User.update(params[:id], params.except!(:id))
-        render_success_response(:ok, UserFormat, user, I18n.t("success.update"))
+      if user = User.update(params[:id], params.except!(:id, :password, :password_confirmation))
+        render_success_response(:ok, PrivateUserFormat, user, I18n.t("success.update"))
       else
         error!(I18n.t("errors.update"), :bad_request)
       end

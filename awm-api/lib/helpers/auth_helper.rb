@@ -51,7 +51,6 @@ module AuthHelper
         break
       end
     end
-    # error!(I18n.t("errors.not_allowed"), :bad_request) unless is_authorized
     is_authorized
   end
 
@@ -63,7 +62,17 @@ module AuthHelper
         break
       end
     end
-    # error!(I18n.t("errors.not_allowed"), :bad_request) unless is_authorized
+    is_authorized
+  end
+
+  def authorized_position_one_of positions
+    is_authorized = false
+    positions.each do |position|
+      if current_user.position_name == position
+        is_authorized = true
+        break
+      end
+    end
     is_authorized
   end
 

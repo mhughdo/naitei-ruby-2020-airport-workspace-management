@@ -286,11 +286,13 @@ DEPENDENCIES
   config
   dotenv-rails
   dry-logic (= 1.0.6)
+  dry-schema (= 1.5.2)
+  dry-validation (= 1.5.3)
   factory_bot_rails
   grape
   grape-entity
   grape_on_rails_routes
-  jwt (~> 2.2.1)
+  jwt (= 2.2.1)
   listen (~> 3.2)
   mysql2 (>= 0.4.4)
   puma (~> 4.1)

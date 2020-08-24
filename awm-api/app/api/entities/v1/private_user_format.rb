@@ -6,5 +6,7 @@ class PrivateUserFormat < Grape::Entity
   expose :gender_name
   expose :position_name
   expose :unit_name
+  expose :shift_name
   expose :user_status_name
+  expose :birthday
 end

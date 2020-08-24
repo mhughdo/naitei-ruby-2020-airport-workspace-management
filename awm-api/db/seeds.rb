@@ -13,14 +13,33 @@ Position.create(name: 'Employee')
 Position.create(name: 'Manager')
 Position.create(name: 'Admin')
 
-RequestStatus.create(name: 'Absence')
+RequestStatus.create(name: 'Pending')
+RequestStatus.create(name: 'Aprroved')
+RequestStatus.create(name: 'Rejected')
 
-Shift.create(time_start: 1, time_end: 9)
-Shift.create(time_start: 9, time_end: 17)
+Shift.create(name: 'Shift 1', time_start: 1, time_end: 9)
+Shift.create(name: 'Shift 2', time_start: 9, time_end: 17)
 
 UserStatus.create(name: 'Pending')
 UserStatus.create(name: 'Active')
 UserStatus.create(name: 'Resignation')
 
-Unit.create(name: 'Handico', description: 'blabla')
+Unit.create(name: 'HR', description: 'blabla')
 Unit.create(name: 'BA', description: 'blabla')
+Unit.create(name: 'WarehouseManagement', description: 'blabla')
+Unit.create(name: 'StoreManagement', description: 'blabla')
+Unit.create(name: 'FlightManagement', description: 'blabla')
+Unit.create(name: 'BookingManagement', description: 'blabla')
+
+User.create(
+  name: 'Admin',
+  email: 'admin@gmail.com',
+  password: '123456',
+  password_confirmation: '123456',
+  shift_id: 1,
+  position_id: 3,
+  unit_id: 2,
+  gender_id: 1,
+  user_status_id: 2,
+  birthday: 1598224980
+)
