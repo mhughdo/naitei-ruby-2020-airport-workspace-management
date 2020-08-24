@@ -7,24 +7,27 @@ class UserApi < ApiV1
       requires :email, type: String, message: I18n.t("errors.required")
       requires :password, type: String, message: I18n.t("errors.required")
       requires :password_confirmation, type: String, same_as: :password, message: I18n.t("errors.required")
-      optional :address, type: String
+      requires :address, type: String, message: I18n.t("errors.required")
+      requires :birthday, type: String, message: I18n.t("errors.required")
+      requires :phone, type: String, message: I18n.t("errors.required")
       requires :gender_id, type: Integer, message: I18n.t("errors.required")
       requires :shift_id, type: Integer, message: I18n.t("errors.required")
       requires :position_id, type: Integer, message: I18n.t("errors.required")
       requires :unit_id, type: Integer, message: I18n.t("errors.required")
     end
     before do
-      error!(I18n.t("errors.not_allowed"), :unauthorized) unless authorized_one_of %w(Admin)
+      error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_one_of %w(Admin)
     end
     post "/signup" do
-      params[:user_status_id] = 1
-      user = User.create params
+      data = valid_params(params, User::PARAMS)
+      data[:user_status_id] = 1
+      user = User.create data
       if user.valid?
         token = encode_token({user_id: user.id})
         set_cookie token
         return render_success_response(:ok, AuthFormat, {token: token, user: user}, I18n.t("success.signup"))
       else
-        error!(user.errors.full_messages[0], :unauthorized)
+        error!(user.errors.full_messages[0], :bad_request)
       end
     end
   end
@@ -59,6 +62,8 @@ class UserApi < ApiV1
       optional :name, type: String, allow_blank: false
       optional :email, type: String, allow_blank: false
       optional :address, type: String
+      optional :birthday, type: String
+      optional :phone, type: String
       optional :shift_id, type: String, allow_blank: false
       optional :position_id, type: String, allow_blank: false
       optional :unit_id, type: String, allow_blank: false
@@ -66,9 +71,10 @@ class UserApi < ApiV1
       optional :gender_id, type: String, allow_blank: false
     end
     put "/:id/update" do
-      error!(I18n.t("errors.not_allowed"), :unauthorized) unless authorized_unit_one_of %w(BA)
+      data = valid_params(params, User::UPDATE_PROFILE_PARAMS)
+      error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_unit_one_of %w(BA)
       get_user_by_id
-      if user = User.update(params[:id], params.except!(:id, :password, :password_confirmation))
+      if user = User.update(params[:id], data)
         render_success_response(:ok, PrivateUserFormat, user, I18n.t("success.update"))
       else
         error!(I18n.t("errors.update"), :bad_request)

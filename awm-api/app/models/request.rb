@@ -1,4 +1,6 @@
 class Request < ApplicationRecord
+  UPDATE_FORM_PARAMS = %i(reason absence_day).freeze
+
   belongs_to :unit
   belongs_to :request_status
   belongs_to :requester, class_name: User.name

@@ -1,6 +1,8 @@
 name: Deploy AWM-API to Kubernetess
 on:
   push:
+    branches:
+      master
     paths:
       - "awm-api/**"
       - ".github/awm-api-cd.yml"

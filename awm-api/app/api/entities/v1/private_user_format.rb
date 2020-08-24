@@ -9,4 +9,5 @@ class PrivateUserFormat < Grape::Entity
   expose :shift_name
   expose :user_status_name
   expose :birthday
+  expose :phone
 end

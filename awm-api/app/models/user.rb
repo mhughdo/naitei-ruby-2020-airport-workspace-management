@@ -1,8 +1,11 @@
 class User < ApplicationRecord
+  # rubocop:disable Layout/LineLength
   VALID_EMAIL_REGEX = Settings.validations.user.email.regex
-  PARAMS = %i(name email password password_confirmation gender_id shift_id position_id unit_id user_status_id).freeze
+  PARAMS = %i(name email password password_confirmation gender_id shift_id position_id unit_id birthday address phone).freeze
   LOGIN_PARAMS = %i(email password).freeze
   PASSWORD_RESET_PARAMS = %i(email password password_confirmation).freeze
+  UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id position_id unit_id user_status_id).freeze
+  # rubocop:enable Layout/LineLength
 
   attr_accessor :reset_token
 
@@ -29,8 +32,9 @@ class User < ApplicationRecord
   has_many :approved_requests, through: :passive_notifications, source: :approver
   has_many :requests, through: :active_notifications, source: :requester
 
-  scope :get_manager, ->{where position_id: "2"}
-  scope :get_unit_manager, ->(unit_id){get_manager.where(unit_id: unit_id)[0]}
+  scope :get_manager, ->{where position_id: Settings.manager_id}
+  scope :get_unit, ->(unit_id){where(unit_id: unit_id)}
+  scope :get_unit_manager, ->(unit_id){User.get_unit(unit_id).get_manager}
 
   delegate :name, to: :gender, prefix: true
   delegate :name, to: :position, prefix: true
@@ -48,7 +52,9 @@ class User < ApplicationRecord
     allow_nil: true,
     length: {maximum: Settings.validations.user.address.max_length}
   validates :birthday, presence: true,
-    allow_nil: false
+    allow_nil: true
+  validates :phone, presence: true,
+    allow_nil: true
 
   before_save :downcase_email
 

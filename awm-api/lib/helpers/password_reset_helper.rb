@@ -1,7 +1,7 @@
 module PasswordResetHelper
   def check_expiration user
     is_expired = user.password_reset_expired?
-    error!(I18n.t("errors.expired_reset_password_token"), :unauthorized) if is_expired
+    error!(I18n.t("errors.expired_reset_password_token"), :bad_request) if is_expired
   end
 
   def check_blank_password
