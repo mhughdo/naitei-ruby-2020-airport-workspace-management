@@ -8,6 +8,7 @@
 
 Gender.create(name: 'Male')
 Gender.create(name: 'Female')
+Gender.create(name: 'Others')
 
 Position.create(name: 'Employee')
 Position.create(name: 'Manager')
@@ -17,8 +18,9 @@ RequestStatus.create(name: 'Pending')
 RequestStatus.create(name: 'Aprroved')
 RequestStatus.create(name: 'Rejected')
 
-Shift.create(name: 'Shift 1', time_start: 1, time_end: 9)
-Shift.create(name: 'Shift 2', time_start: 9, time_end: 17)
+Shift.create(name: 'Shift 1', time_start: "06:30", time_end: "14:30")
+Shift.create(name: 'Shift 2', time_start: "14:30", time_end: "22:30")
+Shift.create(name: 'Shift 3', time_start: "22:30", time_end: "06:30")
 
 UserStatus.create(name: 'Pending')
 UserStatus.create(name: 'Active')

@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
 
   create_table "shifts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.integer "time_start"
-    t.integer "time_end"
+    t.string "time_start"
+    t.string "time_end"
     t.boolean "active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

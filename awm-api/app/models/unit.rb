@@ -2,6 +2,8 @@ class Unit < ApplicationRecord
   has_many :users, dependent: :nullify
   has_many :requests, dependent: :nullify
 
+  scope :active, ->{where active: true}
+
   validates :name, presence: true,
     allow_nil: false,
     uniqueness: {case_sensitive: false}

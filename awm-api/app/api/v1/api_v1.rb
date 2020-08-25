@@ -7,4 +7,8 @@ class ApiV1 < Grape::API
   mount UserApi
   mount ResetPasswordApi
   mount RequestApi
+  mount GenderApi
+  mount PositionApi
+  mount UnitApi
+  mount ShiftApi
 end
