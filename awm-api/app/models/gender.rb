@@ -1,6 +1,8 @@
 class Gender < ApplicationRecord
   has_many :users, dependent: :nullify
 
+  scope :active, ->{where active: true}
+
   validates :name, presence: true,
     allow_nil: false,
     uniqueness: true
