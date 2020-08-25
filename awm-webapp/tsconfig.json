@@ -18,9 +18,18 @@
     "paths": {
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
-      "@assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"],
+      "@utils/*": ["utils/*"],
+      "@providers/*": ["providers/*"],
+      "@hocs/*": ["hocs/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx", "i18n.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/_document.tsx",
+    "i18n.ts"
+  ],
   "exclude": ["node_modules"]
 }

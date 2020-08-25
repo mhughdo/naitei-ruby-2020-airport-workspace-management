@@ -4,10 +4,12 @@ import {theme} from 'styles/theme'
 import App, {AppContext, AppProps} from 'next/app'
 import Layout from 'components/Layout'
 import {ConfigProvider} from 'antd'
-
 import {Locale as AntdLocale} from 'antd/lib/locale-provider'
 import enUS from 'antd/lib/locale/en_US'
 import viVN from 'antd/lib/locale/vi_VN'
+import {ReactQueryDevtools} from 'react-query-devtools'
+import {AuthProvider, User} from 'providers/Auth'
+import withAuth from 'hocs/withAuth'
 import {appWithTranslation, withTranslation, WithTranslation} from '../i18n'
 
 const Layoutless: string[] = ['ForgotPassword', 'PasswordReset', 'Login']
@@ -21,20 +23,29 @@ function getAntdLocale(language: string): AntdLocale {
   }
 }
 
-function MyApp({Component, pageProps, i18n}: AppProps & WithTranslation): any {
+function MyApp({
+  Component,
+  pageProps,
+  i18n,
+  authenticated,
+  auth,
+}: AppProps & WithTranslation & {authenticated: boolean; auth: User}): any {
   const componentName = Component.displayName || Component.name
 
   return (
     <ThemeProvider theme={theme}>
-      <ConfigProvider locale={getAntdLocale(i18n.language)}>
-        {Layoutless.includes(String(componentName)) ? (
-          <Component {...pageProps} />
-        ) : (
-          <Layout>
+      <AuthProvider authenticated={authenticated} preLoadAuth={auth}>
+        <ConfigProvider locale={getAntdLocale(i18n.language)}>
+          {Layoutless.includes(String(componentName)) ? (
             <Component {...pageProps} />
-          </Layout>
-        )}
-      </ConfigProvider>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </ConfigProvider>
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      </AuthProvider>
     </ThemeProvider>
   )
 }
@@ -44,4 +55,4 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   return {...appProps}
 }
 
-export default appWithTranslation(withTranslation([])(MyApp))
+export default appWithTranslation(withTranslation([])(withAuth(MyApp)))

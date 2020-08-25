@@ -1,19 +1,46 @@
 /** @jsx jsx */
 import {jsx, Box, Text, Container} from 'theme-ui'
-import {Form, Input, Button, Result} from 'antd'
+import {Form, Input, Button, Result, message} from 'antd'
 import {WithTranslation, withTranslation, Router} from 'i18n'
 import {useState} from 'react'
+import axios from 'utils/axios'
 import ForgotPasswordBackground from '../assets/forgot_password_background.jpg'
 import Plane from '../assets/svg/plane.svg'
 
 const RequestResetPassword: React.FC<WithTranslation> = ({t}) => {
-  const [isEmailSentSuccessful, setIsEmailSentSuccessful] = useState(false)
+  const [isEmailSentSuccessful, setIsEmailSentSuccessful] = useState<boolean>(
+    false
+  )
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [form] = Form.useForm()
 
-  const onFinish = (values) => {
-    Router.push('/forgot_password?success=true', undefined, {shallow: true})
-    setIsEmailSentSuccessful(true)
-    console.log(values)
+  const onFinish = async (values) => {
+    try {
+      const {email} = values
+      if (email) {
+        setIsLoading(true)
+        const {data} = await axios({
+          url: 'v1/auth/password/reset',
+          method: 'post',
+          data: {
+            email,
+          },
+        })
+        setIsLoading(false)
+        if (data?.message) {
+          message.success(data?.message)
+          Router.push('/forgot_password?success=true', undefined, {
+            shallow: true,
+          })
+          setIsEmailSentSuccessful(true)
+        }
+      }
+    } catch (error) {
+      setIsLoading(false)
+      if (error?.response?.data?.error) {
+        message.error(error?.response?.data?.error)
+      }
+    }
   }
 
   return (
@@ -105,6 +132,7 @@ const RequestResetPassword: React.FC<WithTranslation> = ({t}) => {
                 <Form.Item>
                   <Button
                     size='large'
+                    loading={isLoading}
                     sx={{
                       width: '100%',
                     }}

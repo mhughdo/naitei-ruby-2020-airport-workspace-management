@@ -6,5 +6,9 @@
   "birthday": "Ngày sinh",
   "pos": "Chức vụ",
   "unit": "Đơn vị",
-  "edit": "Sửa"
+  "edit": "Sửa",
+  "email": "Email",
+  "address": "Địa chỉ",
+  "not_found": "Không tìm thấy người dùng",
+  "back_home": "Trở về trang chủ"
 }

@@ -6,5 +6,9 @@
   "birthday": "Birthday",
   "pos": "Position",
   "unit": "Unit",
-  "edit": "Edit"
+  "edit": "Edit",
+  "email": "Email",
+  "address": "Address",
+  "not_found": "User not found",
+  "back_home": "Back home"
 }

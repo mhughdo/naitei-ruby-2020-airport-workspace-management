@@ -4,8 +4,8 @@ on:
     branches:
       master
     paths:
-      - "awm-api/**"
-      - ".github/awm-api-cd.yml"
+      - 'awm-api/**'
+      - '.github/awm-api-cd.yml'
 jobs:
   deploy:
     name: AWM API Deployment
@@ -34,6 +34,6 @@ jobs:
       - name: Check yaml file
         run: grep -E "image" awm-api/k8s/deployment.yml
       - name: Apply yaml file
-        run: kubectl apply -f awm-api/k8s/deployment.yml
+        run: kubectl apply -f awm-api/k8s/deployment.yml --record
       - name: Check result
         run: kubectl get all

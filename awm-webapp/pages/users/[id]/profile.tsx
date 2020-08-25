@@ -1,16 +1,28 @@
 /** @jsx jsx */
 import {jsx, Box, Container, Text} from 'theme-ui'
-import {Card, Descriptions, Avatar, Button} from 'antd'
+import {Card, Descriptions, Avatar, Button, Result} from 'antd'
 import {
   UserOutlined,
   PhoneOutlined,
   ContactsOutlined,
   GroupOutlined,
+  MailOutlined,
 } from '@ant-design/icons'
-import {FaBirthdayCake, FaTransgender} from 'react-icons/fa'
+import {FaBirthdayCake, FaTransgender, FaAddressBook} from 'react-icons/fa'
 import {WithTranslation, withTranslation} from 'i18n'
+import {useRouter} from 'next/router'
+import {useState} from 'react'
+import {formatDate} from 'utils/date'
+import {NextPage} from 'next'
+import {parseCookies} from 'nookies'
+import axios from 'utils/axios'
+import {User} from '@providers/Auth'
 
-const UserProfile: React.FC<WithTranslation> = ({t}) => {
+const UserProfile: NextPage<WithTranslation & {auth: User}> = ({t, auth}) => {
+  const [userInfo, setUserInfo] = useState<User>(auth)
+  const router = useRouter()
+  console.log(userInfo)
+
   return (
     <Container>
       <Box
@@ -19,86 +31,146 @@ const UserProfile: React.FC<WithTranslation> = ({t}) => {
           maxWidth: '100%',
         }}>
         <Card>
-          <Box
-            sx={{
-              mb: 5,
-              textAlign: 'center',
-            }}>
-            <Avatar
-              size={100}
-              sx={{
-                mb: 5,
-              }}
-              src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+          {userInfo ? (
+            <>
+              <Box
+                sx={{
+                  mb: 5,
+                  textAlign: 'center',
+                }}>
+                <Avatar
+                  size={100}
+                  sx={{
+                    mb: 5,
+                  }}
+                  src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+                />
+                <Text
+                  sx={{
+                    fontSize: 4,
+                    fontWeight: 'medium',
+                  }}>
+                  {userInfo?.name}
+                </Text>
+              </Box>
+              <Box>
+                <Descriptions
+                  title={t('user_info')}
+                  bordered
+                  layout='vertical'
+                  extra={<Button type='link'>{t('edit')}</Button>}>
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <UserOutlined /> {t('name')}
+                      </span>
+                    }>
+                    {userInfo?.name}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <MailOutlined /> {t('email')}
+                      </span>
+                    }>
+                    {userInfo?.email}
+                  </Descriptions.Item>
+                  {userInfo?.phone && (
+                    <Descriptions.Item
+                      label={
+                        <span>
+                          <PhoneOutlined /> {t('phone')}
+                        </span>
+                      }>
+                      {userInfo?.phone}
+                    </Descriptions.Item>
+                  )}
+
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <FaTransgender /> {t('gender')}
+                      </span>
+                    }>
+                    {userInfo?.gender_name}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <FaBirthdayCake /> {t('birthday')}
+                      </span>
+                    }>
+                    {formatDate(
+                      Number(userInfo?.birthday) || new Date().getTime()
+                    )}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <ContactsOutlined /> {t('pos')}
+                      </span>
+                    }>
+                    {userInfo?.position_name}
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={
+                      <span>
+                        <GroupOutlined /> {t('unit')}
+                      </span>
+                    }>
+                    {userInfo?.unit_name}
+                  </Descriptions.Item>
+                  {userInfo?.address && (
+                    <Descriptions.Item
+                      label={
+                        <span>
+                          <FaAddressBook /> {t('address')}
+                        </span>
+                      }>
+                      {userInfo?.address}
+                    </Descriptions.Item>
+                  )}
+                </Descriptions>
+              </Box>
+            </>
+          ) : (
+            <Result
+              status='404'
+              title='404'
+              subTitle={t('not_found')}
+              extra={
+                <Button type='primary' onClick={() => router.push('/')}>
+                  {t('back_home')}
+                </Button>
+              }
             />
-            <Text
-              sx={{
-                fontSize: 4,
-                fontWeight: 'medium',
-              }}>
-              Hugh Do
-            </Text>
-          </Box>
-          <Box>
-            <Descriptions
-              title={t('user_info')}
-              bordered
-              layout='vertical'
-              extra={<Button type='link'>{t('edit')}</Button>}>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <UserOutlined /> {t('name')}
-                  </span>
-                }>
-                Do Manh Hung
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <PhoneOutlined /> {t('phone')}
-                  </span>
-                }>
-                0912345678
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <FaTransgender /> {t('gender')}
-                  </span>
-                }>
-                Male
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <FaBirthdayCake /> {t('birthday')}
-                  </span>
-                }>
-                12/11/1999
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <ContactsOutlined /> {t('pos')}
-                  </span>
-                }>
-                Employee
-              </Descriptions.Item>
-              <Descriptions.Item
-                label={
-                  <span>
-                    <GroupOutlined /> {t('unit')}
-                  </span>
-                }>
-                Vietnam Education Unit
-              </Descriptions.Item>
-            </Descriptions>
-          </Box>
+          )}
         </Card>
       </Box>
     </Container>
   )
+}
+
+UserProfile.getInitialProps = async (appContext): Promise<any> => {
+  const cookies = parseCookies(appContext)
+  let auth = JSON.parse(cookies.auth) as User
+  try {
+    if (auth?.id !== Number(appContext.query?.id)) {
+      console.log('alllalal')
+      const {data} = await axios({
+        url: `/v1/users/${appContext.query?.id}`,
+        method: 'get',
+        headers: {
+          Authorization: `${cookies.token}`,
+        },
+      })
+      auth = data
+    }
+    return {auth}
+  } catch (error) {
+    console.log(error.response)
+    return {auth: null}
+  }
 }
 
 export default withTranslation('profile')(UserProfile)

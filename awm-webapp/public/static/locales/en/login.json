@@ -4,6 +4,6 @@
   "forgot_password": "Forgot password",
   "remember_me": "Remember me",
   "required_input": "Please input your {{inputName}}",
-  "username": "Username",
+  "email": "Email",
   "password": "Password"
 }
