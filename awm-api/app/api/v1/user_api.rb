@@ -57,7 +57,8 @@ class UserApi < ApiV1
       render_success_response(:ok, PublicUserFormat, user, I18n.t("success.common"))
     end
 
-    desc "Only BA unit member can update user profile"
+    desc "Only BA unit member can update user profile without position attribute
+      BA unit's Admin can update all information of user"
     params do
       optional :name, type: String, allow_blank: false
       optional :email, type: String, allow_blank: false
@@ -71,7 +72,11 @@ class UserApi < ApiV1
       optional :gender_id, type: String, allow_blank: false
     end
     put "/:id/update" do
-      data = valid_params(params, User::UPDATE_PROFILE_PARAMS)
+      data = if authorized_one_of %w(Admin)
+               valid_params(params, User::UPDATE_PROFILE_PARAMS)
+             else
+               valid_params(params, User::LIMIT_UPDATE_PROFILE_PARAMS)
+             end
       error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_unit_one_of %w(BA)
       get_user_by_id
       if user = User.update(params[:id], data)

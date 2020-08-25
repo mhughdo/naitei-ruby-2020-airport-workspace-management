@@ -1,11 +1,11 @@
 class User < ApplicationRecord
-  # rubocop:disable Layout/LineLength
   VALID_EMAIL_REGEX = Settings.validations.user.email.regex
-  PARAMS = %i(name email password password_confirmation gender_id shift_id position_id unit_id birthday address phone).freeze
+  PARAMS = %i(name email password password_confirmation gender_id \
+    shift_id position_id unit_id birthday address phone).freeze
   LOGIN_PARAMS = %i(email password).freeze
   PASSWORD_RESET_PARAMS = %i(email password password_confirmation).freeze
   UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id position_id unit_id user_status_id).freeze
-  # rubocop:enable Layout/LineLength
+  LIMIT_UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id unit_id user_status_id).freeze
 
   attr_accessor :reset_token
 
