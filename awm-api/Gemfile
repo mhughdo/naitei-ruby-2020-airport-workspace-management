@@ -8,6 +8,7 @@ gem "dotenv-rails", require: "dotenv/rails-now"
 gem "dry-logic", "1.0.6"
 gem "dry-schema", "1.5.2"
 gem "dry-validation", "1.5.3"
+gem "faker"
 gem "grape"
 gem "grape-entity"
 gem "grape_on_rails_routes"
@@ -35,5 +36,6 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :development, :test do
   gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "factory_bot_rails"
+  gem "hirb"
   gem "rspec-rails"
 end
