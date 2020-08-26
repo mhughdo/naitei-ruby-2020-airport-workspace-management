@@ -32,6 +32,7 @@ module AwmApi
     config.autoload_paths << Rails.root.join("app/api/entities/v1")
     config.paths.add File.join("app", "api"), glob: File.join("**", "*.rb")
     config.autoload_paths += Dir[Rails.root.join("app", "api", "*")]
+    config.time_zone = "Hanoi"
     # config.eager_load_paths << Rails.root.join("lib/helpers")
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

@@ -16,6 +16,8 @@ vi:
     phone: số điện thoại không hợp lệ
     update: Cập nhật không thành công
     invalid_user: User không hợp lệ
+    already_approved: Yêu cầu này đã được chấp nhận
+    already_rejected: Yêu cầu này đã được từ chối
   success:
     common: Thành công
     login: Đăng nhập thành công

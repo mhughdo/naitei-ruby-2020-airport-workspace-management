@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
   create_table "requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "requester_id"
     t.integer "approver_id"
-    t.integer "absence_day"
+    t.string "absence_day"
     t.string "reason"
     t.string "comment"
     t.bigint "unit_id", null: false

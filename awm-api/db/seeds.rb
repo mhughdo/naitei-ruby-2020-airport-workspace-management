@@ -15,7 +15,7 @@ Position.create(name: "Manager")
 Position.create(name: "Admin")
 
 RequestStatus.create(name: "Pending")
-RequestStatus.create(name: "Aprroved")
+RequestStatus.create(name: "Approved")
 RequestStatus.create(name: "Rejected")
 
 Shift.create(name: "Shift 1", time_start: "06:30", time_end: "14:30")
@@ -35,6 +35,7 @@ Unit.create(name: "BookingManagement", description: "blabla")
 
 WorkTimeStatus.create(name: "Late")
 WorkTimeStatus.create(name: "On Time")
+WorkTimeStatus.create(name: "Absence")
 
 User.create(
   name: "Admin",
@@ -53,7 +54,7 @@ User.create(
 
 10.times do |n|
   name = Faker::Name.name
-  email = "user#{n+1}@gmail.org"
+  email = "user#{n+1}@gmail.com"
   password = "123456"
   user = User.create!(
     name: name,
@@ -69,7 +70,9 @@ User.create(
     user_status_id: Faker::Number.between(from: 1, to: 3),
     birthday: Time.now.to_i.to_s << "000"
   )
-  11.times do |month|
+  current_month = Time.now.month
+
+  current_month.times do |month|
     days = 0
     case month + 1
     when 1, 3, 5, 7, 8, 10, 12
@@ -79,6 +82,7 @@ User.create(
     else
       days = 29
     end
+    days = Time.now.day if month + 1 == current_month
 
     days.times do |day|
       shift = Shift.find_by id: user.shift_id

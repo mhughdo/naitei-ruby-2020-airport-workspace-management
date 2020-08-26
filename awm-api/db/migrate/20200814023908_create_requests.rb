@@ -3,7 +3,7 @@ class CreateRequests < ActiveRecord::Migration[6.0]
     create_table :requests do |t|
       t.integer :requester_id
       t.integer :approver_id
-      t.integer :absence_day
+      t.string :absence_day
       t.string :reason
       t.string :comment
       t.references :unit, null: false, foreign_key: true
