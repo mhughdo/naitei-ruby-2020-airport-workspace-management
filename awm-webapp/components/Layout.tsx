@@ -132,7 +132,11 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           sx={{
             margin: '16px',
           }}>
-          <Image src='/logo.png' />
+          <Link href='/'>
+            <a>
+              <Image src='/logo.png' />
+            </a>
+          </Link>
         </Box>
         <Menu
           theme='dark'
