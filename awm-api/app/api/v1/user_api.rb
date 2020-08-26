@@ -1,6 +1,11 @@
 class UserApi < ApiV1
   # rubocop:disable Metrics/BlockLength
   namespace :auth do
+    before do
+      authenticated
+      error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_one_of %w(Admin)
+    end
+
     desc "Sign up, only admin can create account"
     params do
       requires :name, type: String, message: I18n.t("errors.required")
@@ -14,9 +19,6 @@ class UserApi < ApiV1
       requires :shift_id, type: Integer, message: I18n.t("errors.required")
       requires :position_id, type: Integer, message: I18n.t("errors.required")
       requires :unit_id, type: Integer, message: I18n.t("errors.required")
-    end
-    before do
-      error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_one_of %w(Admin)
     end
     post "/signup" do
       data = valid_params(params, User::PARAMS)
@@ -62,13 +64,13 @@ class UserApi < ApiV1
     params do
       optional :name, type: String, allow_blank: false
       optional :email, type: String, allow_blank: false
-      optional :address, type: String
-      optional :birthday, type: String
-      optional :phone, type: String
+      optional :address, type: String, allow_blank: false
+      optional :birthday, type: String, allow_blank: false
+      optional :phone, type: String, allow_blank: false,
+        regexp: {value: /[0-9]{10,11}/, message: I18n.t("errors.phone")}
       optional :shift_id, type: String, allow_blank: false
       optional :position_id, type: String, allow_blank: false
       optional :unit_id, type: String, allow_blank: false
-      optional :user_status_id, type: String, allow_blank: false
       optional :gender_id, type: String, allow_blank: false
     end
     put "/:id/update" do
@@ -77,6 +79,7 @@ class UserApi < ApiV1
              else
                valid_params(params, User::LIMIT_UPDATE_PROFILE_PARAMS)
              end
+      error!(I18n.t("errors.not_allowed_to_change_position"), :forbidden) if params[:position_id] == Settings.admin_id
       error!(I18n.t("errors.not_allowed"), :forbidden) unless authorized_unit_one_of %w(BA)
       get_user_by_id
       if user = User.update(params[:id], data)

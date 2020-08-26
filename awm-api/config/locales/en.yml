@@ -12,6 +12,8 @@ en:
     expired_reset_password_token: Reset password token was expired
     required: is required
     not_allowed: not allowed to do this action
+    not_allowed_to_change_position: not allowed to change position
+    phone: Phone number is invalid
     update: Update failed
     invalid_user: Invalid user
   success:
