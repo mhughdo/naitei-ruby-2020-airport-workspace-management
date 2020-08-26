@@ -30,10 +30,12 @@ instance.interceptors.response.use(
   (error) => {
     const code = error && error.response ? error.response.status : 0
     if (code === 401) {
-      Router.push('/login')
-      destroyCookie(null, 'token')
-      destroyCookie(null, 'auth')
-      console.log('Logged out')
+      if (typeof window !== 'undefined') {
+        Router.push('/login')
+        destroyCookie(null, 'token')
+        destroyCookie(null, 'auth')
+        console.log('Logged out')
+      }
     }
     return Promise.reject(error)
   }

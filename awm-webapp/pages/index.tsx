@@ -1,11 +1,46 @@
-import {ReactNode} from 'react'
+import React from 'react'
 import {Box} from 'theme-ui'
 import HomeComponent from 'components/Home'
+import axios from 'utils/axios'
+import {parseCookies} from 'nookies'
+import {NextPage} from 'next'
+import getMonth from 'date-fns/getMonth'
+import getYear from 'date-fns/getYear'
 
-export default function Home(): ReactNode {
+const Home: NextPage<{preWorkingData}> = ({preWorkingData}) => {
   return (
     <Box>
-      <HomeComponent />
+      <HomeComponent preWorkingData={preWorkingData} />
     </Box>
   )
 }
+
+Home.getInitialProps = async (pageContext): Promise<any> => {
+  try {
+    const cookies = parseCookies(pageContext)
+    const currentMonth = getMonth(new Date()) + 1
+    const currentYear = getYear(new Date())
+    const {
+      data: {data: preWorkingData},
+    } = await axios({
+      url: '/v1/work_times',
+      method: 'get',
+      headers: {
+        Authorization: `${cookies.token}`,
+      },
+      params: {
+        year: currentYear,
+        month: currentMonth,
+      },
+    })
+
+    // console.log(currentMonth, currentYear)
+    // console.log(workingData)
+    return {preWorkingData}
+  } catch (error) {
+    console.log(error)
+    return {}
+  }
+}
+
+export default Home
