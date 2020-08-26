@@ -35,7 +35,7 @@ module AuthHelper
 
   def auth_header
     token = request.headers["Authorization"] || cookies[:token]
-    error!(I18n.t("errors.auth_token_not_found"), :bad_request) unless token
+    error!(I18n.t("errors.auth_token_not_found"), :unauthorized) unless token
     token
   end
 
