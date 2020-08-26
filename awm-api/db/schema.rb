@@ -113,8 +113,11 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
   end
 
   create_table "work_times", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "time_start"
-    t.integer "time_end"
+    t.string "time_start"
+    t.string "time_end"
+    t.integer "year"
+    t.integer "month"
+    t.integer "day"
     t.bigint "user_id", null: false
     t.bigint "work_time_status_id", null: false
     t.bigint "shift_id", null: false

@@ -42,7 +42,7 @@ spec:
             - name: HOST
               value: awm.hughdo.dev
             - name: HOST_EMAIL
-              value: awm@gmail.com
+              value: awm@hughdo.dev
             - name: MAIL_USER_NAME
               valueFrom:
                 secretKeyRef:

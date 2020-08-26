@@ -120,6 +120,8 @@ GEM
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
+    faker (2.13.0)
+      i18n (>= 1.6, < 2)
     ffi (1.13.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -135,6 +137,7 @@ GEM
       multi_json (>= 1.3.2)
     grape_on_rails_routes (0.3.2)
       rails (>= 3.1.1)
+    hirb (0.7.3)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     json (2.3.1)
@@ -289,9 +292,11 @@ DEPENDENCIES
   dry-schema (= 1.5.2)
   dry-validation (= 1.5.3)
   factory_bot_rails
+  faker
   grape
   grape-entity
   grape_on_rails_routes
+  hirb
   jwt (= 2.2.1)
   listen (~> 3.2)
   mysql2 (>= 0.4.4)
