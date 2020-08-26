@@ -14,9 +14,9 @@ const PasswordReset: NextPage<{isValidToken: boolean}> = ({isValidToken}) => {
 
 PasswordReset.displayName = 'PasswordReset'
 
-PasswordReset.getInitialProps = async (appContext): Promise<any> => {
+PasswordReset.getInitialProps = async (pageContext): Promise<any> => {
   try {
-    const {query} = appContext
+    const {query} = pageContext
     const {token, email} = query
 
     if (!email) {

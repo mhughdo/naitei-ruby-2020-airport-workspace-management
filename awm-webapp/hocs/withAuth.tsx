@@ -1,7 +1,8 @@
 /* eslint-disable operator-linebreak */
 import {useRouter} from 'next/router'
 import {AppContext} from 'next/app'
-import {parseCookies} from 'nookies'
+import {destroyCookie, parseCookies, setCookie} from 'nookies'
+import {WithTranslation} from 'next-i18next'
 
 function isBrowser() {
   return typeof window !== 'undefined'
@@ -10,14 +11,22 @@ function isBrowser() {
 const nonAuthPaths = ['/forgot_password', '/login', '/password_resets/[token]']
 const loginPath = nonAuthPaths[1]
 
-export default function withAuth(WrappedComponent) {
-  const WithAuthWrapper = (props) => {
+type NextApp<P = Record<string, unknown>, IP = P> = {
+  getInitialProps?(context: AppContext): Promise<any>
+} & React.FC<P>
+
+export default function withAuth<P = Record<string, unknown>, IP = P>(
+  WrappedComponent: NextApp<WithTranslation, IP>
+): NextApp<unknown, IP> {
+  const WithAuthWrapper: NextApp<
+    WithTranslation & {
+      authenticated: boolean
+    }
+  > = (props) => {
     const router = useRouter()
-    const {authenticated} = props
+    const {authenticated, i18n} = props
 
-    console.log(authenticated, router.pathname)
-
-    if (isBrowser()) {
+    const conditionalRedirect = () => {
       if (!authenticated && !nonAuthPaths.includes(router.pathname)) {
         router.push(loginPath)
         return <></>
@@ -27,6 +36,22 @@ export default function withAuth(WrappedComponent) {
         router.push('/')
         return <></>
       }
+    }
+
+    const setLocaleCookie = () => {
+      const cookies = parseCookies()
+      if (!cookies['next-i18next']) {
+        setCookie(null, 'next-i18next', i18n.language, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+          secure: true,
+        })
+      }
+    }
+
+    if (isBrowser()) {
+      conditionalRedirect()
+      setLocaleCookie()
     }
     return <WrappedComponent {...props} />
   }
@@ -49,9 +74,17 @@ export default function withAuth(WrappedComponent) {
       authenticated = true
     }
 
-    if (cookies?.auth) {
-      auth = JSON.parse(cookies.auth)
+    try {
+      if (cookies?.auth) {
+        auth = JSON.parse(cookies.auth)
+      }
+    } catch (error) {
+      destroyCookie(appContext.ctx, 'token')
+      destroyCookie(appContext.ctx, 'auth')
+      authenticated = false
+      auth = null
     }
+
     const componentProps = await WrappedComponent.getInitialProps(appContext)
 
     return {...componentProps, authenticated, auth}

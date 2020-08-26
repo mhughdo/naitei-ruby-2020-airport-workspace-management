@@ -12,6 +12,10 @@ instance.interceptors.request.use(
     if (cookies?.token) {
       config.headers.Authorization = `${cookies.token}`
     }
+
+    if (cookies['next-i18next']) {
+      config.headers['accept-language'] = cookies['next-i18next']
+    }
     return config
   },
   (error) => {
