@@ -4,8 +4,8 @@ class User < ApplicationRecord
     shift_id position_id unit_id birthday address phone).freeze
   LOGIN_PARAMS = %i(email password).freeze
   PASSWORD_RESET_PARAMS = %i(email password password_confirmation).freeze
-  UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id position_id unit_id user_status_id).freeze
-  LIMIT_UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id unit_id user_status_id).freeze
+  UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id position_id unit_id address phone birthday).freeze
+  LIMIT_UPDATE_PROFILE_PARAMS = %i(name email gender_id shift_id unit_id address phone birthday).freeze
 
   attr_accessor :reset_token
 

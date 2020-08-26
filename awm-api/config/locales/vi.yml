@@ -12,6 +12,8 @@ vi:
     expired_reset_password_token: Token thay đổi mật khẩu đã hết hạn
     required: không được bỏ trống
     not_allowed: Không được phép thực hiện
+    not_allowed_to_change_position: không cho phép thay đổi vị trí
+    phone: số điện thoại không hợp lệ
     update: Cập nhật không thành công
     invalid_user: User không hợp lệ
   success:
