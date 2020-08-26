@@ -9,6 +9,18 @@
   "edit": "Sửa",
   "email": "Email",
   "address": "Địa chỉ",
-  "not_found": "Không tìm thấy người dùng",
-  "back_home": "Trở về trang chủ"
+  "not_found": "Không tìm thấy ngư  ời dùng",
+  "back_home": "Trở về trang chủ",
+  "account_settings": "Cài đặt tài khoản",
+  "change_avatar": "Thay ảnh đại diện",
+  "avatar": "Ảnh đại diện",
+  "invalid_email": "Xin vui lòng nhập Email không hợp lệ!",
+  "invalid_phone": "Số điện thoại không hợp lệ, gồm 10-11 số",
+  "please_select": "Vui lòng chọn {{selectName}}",
+  "please_input": "Vui lòng nhập {{inputName}}",
+  "update_info": "Cập nhật thông tin",
+  "basic_settings": "Cơ bản",
+  "notification": "Thông báo",
+  "workspace_settings": "Cài đặt workspace",
+  "update_sucess": "Cập nhật profile thành công"
 }

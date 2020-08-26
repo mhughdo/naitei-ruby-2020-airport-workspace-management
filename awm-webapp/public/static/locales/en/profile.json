@@ -10,5 +10,17 @@
   "email": "Email",
   "address": "Address",
   "not_found": "User not found",
-  "back_home": "Back home"
+  "back_home": "Back home",
+  "account_settings": "Acount Settings",
+  "change_avatar": "Change avatar",
+  "avatar": "Avatar",
+  "invalid_email": "The input is not valid E-mail!",
+  "invalid_phone": "Phone number is not valid, length must be between 10-11 numbers",
+  "please_select": "Please select a {{selectName}}",
+  "please_input": "Please input {{inputName}}",
+  "update_info": "Update information",
+  "basic_settings": "Basic settings",
+  "notification": "Notification",
+  "workspace_settings": "Workspace settings",
+  "update_sucess": "Profile updated successfully"
 }

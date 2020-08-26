@@ -32,10 +32,13 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
       if (data) {
         const {user, token} = data?.data
         // document.cookie = `token=${token}`
-        setCookie(null, 'token', token, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: '/',
-        })
+        if (process.env.NODE_ENV !== 'production') {
+          setCookie(null, 'token', token, {
+            maxAge: 30 * 24 * 60 * 60,
+            path: '/',
+          })
+        }
+
         setCookie(null, 'auth', JSON.stringify(user), {
           maxAge: 30 * 24 * 60 * 60,
           path: '/',
@@ -47,9 +50,8 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
     } catch (error) {
       console.log(error)
       setIsLoading(false)
-      if (error?.response?.data.error) {
-        message.error(error.response.data.error)
-      }
+      const errMessage = error?.response?.data?.error || t('error')
+      message.error(errMessage)
     }
   }
 
@@ -193,4 +195,4 @@ LoginComponent.propTypes = {
   t: PropTypes.func.isRequired,
 }
 
-export default withTranslation('login')(LoginComponent)
+export default withTranslation(['login', 'common'])(LoginComponent)

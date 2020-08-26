@@ -9,19 +9,19 @@ import {
   MailOutlined,
 } from '@ant-design/icons'
 import {FaBirthdayCake, FaTransgender, FaAddressBook} from 'react-icons/fa'
-import {WithTranslation, withTranslation} from 'i18n'
+import {Link, WithTranslation, withTranslation} from 'i18n'
 import {useRouter} from 'next/router'
 import {useState} from 'react'
 import {formatDate} from 'utils/date'
 import {NextPage} from 'next'
 import {parseCookies} from 'nookies'
 import axios from 'utils/axios'
-import {User} from '@providers/Auth'
+import {useAuth, User} from '@providers/Auth'
 
 const UserProfile: NextPage<WithTranslation & {auth: User}> = ({t, auth}) => {
   const [userInfo, setUserInfo] = useState<User>(auth)
+  const {auth: userData} = useAuth()
   const router = useRouter()
-  console.log(userInfo)
 
   return (
     <Container>
@@ -58,7 +58,17 @@ const UserProfile: NextPage<WithTranslation & {auth: User}> = ({t, auth}) => {
                   title={t('user_info')}
                   bordered
                   layout='vertical'
-                  extra={<Button type='link'>{t('edit')}</Button>}>
+                  extra={
+                    userData.unit_name === 'BA' && (
+                      <Button type='link'>
+                        <Link
+                          href={`/users/${userInfo.id}/settings`}
+                          as={`/users/${userInfo.id}/settings`}>
+                          <a>{t('edit')}</a>
+                        </Link>
+                      </Button>
+                    )
+                  }>
                   <Descriptions.Item
                     label={
                       <span>
@@ -151,14 +161,13 @@ const UserProfile: NextPage<WithTranslation & {auth: User}> = ({t, auth}) => {
   )
 }
 
-UserProfile.getInitialProps = async (appContext): Promise<any> => {
-  const cookies = parseCookies(appContext)
-  let auth = JSON.parse(cookies.auth) as User
+UserProfile.getInitialProps = async (pageContext): Promise<any> => {
   try {
-    if (auth?.id !== Number(appContext.query?.id)) {
-      console.log('alllalal')
+    const cookies = parseCookies(pageContext)
+    let auth = JSON.parse(cookies.auth) as User
+    if (auth?.id !== Number(pageContext.query?.id)) {
       const {data} = await axios({
-        url: `/v1/users/${appContext.query?.id}`,
+        url: `/v1/users/${pageContext.query?.id}`,
         method: 'get',
         headers: {
           Authorization: `${cookies.token}`,
@@ -166,11 +175,11 @@ UserProfile.getInitialProps = async (appContext): Promise<any> => {
       })
       auth = data
     }
-    return {auth}
+    return {auth, namespacesRequired: ['profile', 'common']}
   } catch (error) {
     console.log(error.response)
     return {auth: null}
   }
 }
 
-export default withTranslation('profile')(UserProfile)
+export default withTranslation(['profile', 'common'])(UserProfile)

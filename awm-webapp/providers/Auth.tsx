@@ -1,8 +1,10 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import useUserProfile from 'hooks/useUserProfile'
+import {Router} from 'i18n'
 import {useRouter} from 'next/router'
-import {destroyCookie} from 'nookies'
+import {destroyCookie, setCookie} from 'nookies'
 import {
   ReactNode,
   ReactElement,
@@ -52,15 +54,8 @@ export const AuthProvider = ({
 }): ReactElement => {
   const [isAuthenticated, setAuthenticated] = useState<boolean>(authenticated)
   const [auth, setAuth] = useState<User>(preLoadAuth)
-  const {isLoading, data} = useUserProfile()
+  const {isLoading, data} = useUserProfile(isAuthenticated)
   const router = useRouter()
-
-  if (authenticated && !isLoading) {
-    const userData = data?.data
-    if (userData && auth !== userData) {
-      setAuth(userData)
-    }
-  }
 
   const logout = () => {
     destroyCookie(null, 'token')
@@ -68,6 +63,26 @@ export const AuthProvider = ({
     setAuth(null)
     setAuthenticated(false)
     router.push('/login')
+  }
+
+  if (authenticated && !isLoading) {
+    const userData = data?.data
+    if (
+      userData &&
+      auth?.id &&
+      auth !== userData &&
+      Object.entries(auth).sort().toString() !==
+        Object.entries(userData).sort().toString()
+    ) {
+      // console.log('auth', auth, 'userData', userData)
+      // destroyCookie(null, 'token')
+      // destroyCookie(null, 'auth')
+      setCookie(null, 'auth', JSON.stringify(userData), {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      })
+      setAuth(userData)
+    }
   }
 
   return (
