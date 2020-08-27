@@ -14,7 +14,6 @@ import {
   Space,
   Tooltip,
 } from 'antd'
-
 import {CheckOutlined, CloseOutlined, EditOutlined} from '@ant-design/icons'
 import {withTranslation} from 'i18n'
 import {NextPage} from 'next'
@@ -26,9 +25,10 @@ import {useState} from 'react'
 import {useForm} from 'antd/lib/form/Form'
 import moment from 'moment'
 import {useAuth} from '@providers/Auth'
+import compareAsc from 'date-fns/compareAsc'
 
 const StatusColors = {
-  Aprroved: 'green',
+  Approved: 'green',
   Pending: 'geekblue',
   Rejected: 'red',
 }
@@ -65,7 +65,7 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         method: 'post',
         data: {
           reason,
-          absence_day,
+          absence_day: Math.floor(absence_day / 1000),
         },
       })
     },
@@ -117,7 +117,7 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         message.error(t('error'))
       },
       onSuccess: () => {
-        message.success(t('approve_sucess'))
+        message.success(t('approve_success'))
       },
       onSettled: () => {
         queryCache.invalidateQueries(request_name)
@@ -137,7 +137,7 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         message.error(t('error'))
       },
       onSuccess: () => {
-        message.success(t('reject_sucess'))
+        message.success(t('reject_success'))
       },
       onSettled: () => {
         queryCache.invalidateQueries(request_name)
@@ -199,7 +199,9 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
       title: t('day'),
       dataIndex: 'absence_day',
       key: 'absence_day',
-      render: (text) => <Text>{formatDate(Number(text))}</Text>,
+      render: (text) => <Text>{formatDate(Number(text * 1000))}</Text>,
+      sorter: (a, b) => compareAsc(a.absence_day * 1000, b.absence_day * 1000),
+      // sortDirections: ['descend', 'ascend'],
     },
     {
       title: t('reason'),
@@ -220,6 +222,23 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
       title: t('status'),
       key: 'request_status_name',
       dataIndex: 'request_status_name',
+      filters: [
+        {
+          text: 'Approved',
+          value: 'Approved',
+        },
+        {
+          text: 'Pending',
+          value: 'Pending',
+        },
+        {
+          text: 'Rejected',
+          value: 'Rejected',
+        },
+      ],
+      onFilter: (value, record) =>
+        // eslint-disable-next-line implicit-arrow-linebreak
+        record.request_status_name.indexOf(value) === 0,
       render: (tag) => {
         return (
           <Tag color={StatusColors[tag] || 'geekblue'} key={tag}>
@@ -253,7 +272,7 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
                 </Button>
               </Tooltip>
             )}
-            {isManager && record.request_status_name !== 'Approved' && (
+            {isManager && record.request_status_name === 'Pending' && (
               <>
                 <Tooltip placement='top' title={t('approve')}>
                   <Button type='link' onClick={() => approve({id: record.id})}>

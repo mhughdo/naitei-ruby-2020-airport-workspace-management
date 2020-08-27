@@ -7,7 +7,7 @@ function useWorkingData({
 }: {
   month: number
   year: number
-}): QueryResult {
+}): QueryResult<any, any> {
   return useQuery(['working_data', month, year], async () => {
     return axios({
       url: '/v1/work_times',

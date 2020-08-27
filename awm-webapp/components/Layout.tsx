@@ -143,7 +143,9 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           mode='inline'
           defaultSelectedKeys={['working_calendar']}>
           <Menu.Item key='working_calendar' icon={<CalendarOutlined />}>
-            {t('working_calendar')}
+            <Link href='/' as='/'>
+              <a>{t('working_calendar')}</a>
+            </Link>
           </Menu.Item>
           <Menu.Item key='stats' icon={<ProjectOutlined />}>
             {t('stats')}
