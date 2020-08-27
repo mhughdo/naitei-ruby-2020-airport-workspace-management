@@ -22,5 +22,6 @@
   "basic_settings": "Basic settings",
   "notification": "Notification",
   "workspace_settings": "Workspace settings",
-  "update_sucess": "Profile updated successfully"
+  "update_sucess": "Profile updated successfully",
+  "error": "Unexpected error occurred"
 }

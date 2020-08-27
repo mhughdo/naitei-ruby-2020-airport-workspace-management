@@ -143,13 +143,17 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           mode='inline'
           defaultSelectedKeys={['working_calendar']}>
           <Menu.Item key='working_calendar' icon={<CalendarOutlined />}>
-            {t('working_calendar')}
+            <Link href='/' as='/'>
+              <a>{t('working_calendar')}</a>
+            </Link>
           </Menu.Item>
           <Menu.Item key='stats' icon={<ProjectOutlined />}>
             {t('stats')}
           </Menu.Item>
           <Menu.Item key='3' icon={<CopyOutlined />}>
-            {t('req')}
+            <Link href='/request' as='/request'>
+              <a>{t('req')}</a>
+            </Link>
           </Menu.Item>
         </Menu>
       </Sider>

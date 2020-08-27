@@ -2,5 +2,7 @@
   "timesheet": "Bảng thời gian",
   "Shift 1": "Ca 1",
   "Shift 2": "Ca 2",
-  "Shift 3": "Ca 3"
+  "Shift 3": "Ca 3",
+  "error": "Đã có lỗi xảy ra",
+  "absence": "Nghỉ"
 }

@@ -1,0 +1,22 @@
+{
+  "page_header": "Yêu cầu xin nghỉ",
+  "requester": "Người tạo yêu cầu",
+  "day": "Ngày",
+  "reason": "Lí do",
+  "unit": "Đơn vị",
+  "approver": "Người phê duyệt",
+  "status": "Trạng thái",
+  "comment": "Bình luận",
+  "create_request": "Tạo yêu cầu mới",
+  "update_request": "Sửa yêu cầu",
+  "please_input": "Xin vui lòng nhập lí do",
+  "create_success": "Tạo yêu cầu xin nghỉ thành công",
+  "update_success": "Cập nhật yêu cầu thành công",
+  "approve_success": "Chấp thuận yêu cầu thành công",
+  "reject_success": "Từ chối yêu cầu thành công",
+  "action": "Hành động",
+  "edit": "sửa",
+  "reject": "Từ chối",
+  "approve": "Chấp thuận",
+  "error": "Đã có lỗi xảy ra"
+}

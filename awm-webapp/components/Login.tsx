@@ -32,12 +32,10 @@ const LoginComponent: NextPage<WithTranslation> = ({t}) => {
       if (data) {
         const {user, token} = data?.data
         // document.cookie = `token=${token}`
-        if (process.env.NODE_ENV !== 'production') {
-          setCookie(null, 'token', token, {
-            maxAge: 30 * 24 * 60 * 60,
-            path: '/',
-          })
-        }
+        setCookie(null, 'token', token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        })
 
         setCookie(null, 'auth', JSON.stringify(user), {
           maxAge: 30 * 24 * 60 * 60,

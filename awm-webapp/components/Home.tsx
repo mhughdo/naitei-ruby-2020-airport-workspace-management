@@ -10,7 +10,7 @@ import getMonth from 'date-fns/getMonth'
 import {getYear} from 'date-fns'
 import {NextPage} from 'next'
 
-type WorkingStatus = 'On Time' | 'Late'
+type WorkingStatus = 'On Time' | 'Late' | 'Absence'
 type Shift = 'Shift 1' | 'Shift 2' | 'Shift 3'
 
 type WorkingData = [
@@ -36,6 +36,27 @@ const HomeComponent: NextPage<
     year,
   })
 
+  const disabledDate = (currentDate) => {
+    if (!data) return false
+    if (isFetching) return false
+    const {
+      data: {data: workingData},
+    } = data
+
+    if (workingData?.length) {
+      const day = currentDate.date()
+      const newMonth = currentDate.month() + 1
+      const dateData = workingData.find(
+        (d) => d.day === day && d.month === newMonth
+      )
+      if (dateData?.work_time_status_name === 'Absence') {
+        return true
+      }
+    }
+
+    return false
+  }
+
   const dateCellRender = (value) => {
     if (!data) return
     const {
@@ -51,12 +72,30 @@ const HomeComponent: NextPage<
       )
       if (!dateData) return
       const isOnTime = dateData?.work_time_status_name === 'On Time'
+
+      if (!dateData?.time_start || !dateData?.time_end) {
+        if (dateData?.work_time_status_name === 'Absence') {
+          return (
+            <Box>
+              <Tag color='orange'>{t(dateData.shift_name)}</Tag>
+              <Badge
+                sx={{
+                  display: 'block',
+                }}
+                status='warning'
+                text={t('absence')}
+              />
+            </Box>
+          )
+        }
+      }
+
       const time_start = format(
-        new Date(Number(`${dateData.time_start}000`)),
+        new Date(Number(`${dateData?.time_start}000`)),
         timeFormat
       )
       const time_end = format(
-        new Date(Number(`${dateData.time_end}000`)),
+        new Date(Number(`${dateData?.time_end}000`)),
         timeFormat
       )
 
@@ -111,6 +150,7 @@ const HomeComponent: NextPage<
             },
           }}
           onChange={onDateChange}
+          disabledDate={disabledDate}
           dateCellRender={dateCellRender}
         />
       </Box>
