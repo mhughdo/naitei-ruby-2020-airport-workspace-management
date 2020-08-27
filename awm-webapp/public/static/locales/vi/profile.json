@@ -22,5 +22,6 @@
   "basic_settings": "Cơ bản",
   "notification": "Thông báo",
   "workspace_settings": "Cài đặt workspace",
-  "update_sucess": "Cập nhật profile thành công"
+  "update_sucess": "Cập nhật profile thành công",
+  "error": "Đã có lỗi xảy ra"
 }

@@ -5,5 +5,6 @@
   "remember_me": "Ghi nhớ đăng nhập",
   "required_input": "Xin vui lòng nhập {{inputName}}",
   "email": "Email",
-  "password": "Mật khẩu"
+  "password": "Mật khẩu",
+  "error": "Đã có lỗi xảy ra"
 }
