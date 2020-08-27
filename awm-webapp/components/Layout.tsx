@@ -149,7 +149,9 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
             {t('stats')}
           </Menu.Item>
           <Menu.Item key='3' icon={<CopyOutlined />}>
-            {t('req')}
+            <Link href='/request' as='/request'>
+              <a>{t('req')}</a>
+            </Link>
           </Menu.Item>
         </Menu>
       </Sider>

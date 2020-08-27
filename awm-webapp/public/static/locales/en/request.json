@@ -1,0 +1,22 @@
+{
+  "page_header": "Request",
+  "requester": "Requester",
+  "day": "Day",
+  "reason": "Reason",
+  "unit": "Unit",
+  "approver": "Approver",
+  "status": "Status",
+  "comment": "Comment",
+  "create_request": "Create Request",
+  "update_request": "Edit request",
+  "please_input": "Please input the reason!",
+  "create_success": "Your request has been created successfully!",
+  "update_success": "Your request has been updated successfully!",
+  "approve_success": "Approved request successfully!",
+  "reject_success": "Rejected request successfully!",
+  "action": "Action",
+  "edit": "Edit",
+  "reject": "Reject",
+  "approve": "Approve",
+  "error": "Unexpected error occurred"
+}
