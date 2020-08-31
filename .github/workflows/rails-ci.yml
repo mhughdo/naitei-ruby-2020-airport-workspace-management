@@ -12,18 +12,32 @@ on:
 
 jobs:
   CI:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Gemfile
+      - run: |
+          sudo /etc/init.d/mysql start
+      - name: Install bundler
+        run: sudo gem install bundler
+      - uses: actions/cache@v2
+        with:
+          path: awm-api/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+              ${{ runner.os }}-gems-
+      - name: Bundle install
         run: |
           cd awm-api
-          bundle install --with development
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: Rubocop
-        run: cd awm-api && bundle exec rubocop
+        run: cd awm-api && bundle exec rubocop -c .rubocop.yml
       - name: Rails Best Practices
         run:
           cd awm-api && bundle exec rails_best_practices -e
           "db/schema.rb,db/migrate,vendor,app/models/application_record.rb"
-      - name: Rpec
-        run: cd awm-api && bundle exec rspec --format documentation
+      - name: Rspec
+        run: |
+          cd awm-api
+          DATABASE_USERNAME=root DATABASE_PASSWORD=root DEVELOPMENT_DATABASE_NAME=awm_api_test TEST_DATABASE_NAME=awm_api_test bundle exec rails db:create
+          DATABASE_USERNAME=root DATABASE_PASSWORD=root DEVELOPMENT_DATABASE_NAME=awm_api_test TEST_DATABASE_NAME=awm_api_test bundle exec rspec --format documentation

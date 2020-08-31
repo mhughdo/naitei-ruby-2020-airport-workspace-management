@@ -19,6 +19,7 @@ AllCops:
     - "Gemfile"
   Exclude:
     - "vendor/**/*"
+    - "awm-api/vendor/**/*"
     - "config/unicorn.rb"
     - "bin/*"
     - "db/**/*"

@@ -51,6 +51,3 @@ app/**/.DS_Store
 # Ignore application configuration
 config/application.yml
 
-spec/*
-!spec/spec_helper.rb
-!spec/rails_helper.rb
