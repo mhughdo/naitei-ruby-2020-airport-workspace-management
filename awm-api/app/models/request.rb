@@ -6,6 +6,9 @@ class Request < ApplicationRecord
   belongs_to :requester, class_name: User.name
   belongs_to :approver, class_name: User.name
 
+  scope :filter_unit, ->(unit_id){where unit_id: unit_id}
+  scope :filter_requester, ->(requester_id){where requester_id: requester_id}
+
   delegate :name, to: :unit, prefix: true
   delegate :name, to: :request_status, prefix: true
   delegate :name, to: :requester, prefix: true

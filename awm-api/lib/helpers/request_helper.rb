@@ -3,9 +3,14 @@ module RequestHelper
 
   def valid_user request_id
     request = valid_request request_id
-    return if request.requester_id == current_user.id
+    return true if request.requester_id == current_user.id
 
     error!(I18n.t("errors.invalid_user"), :bad_request)
+  end
+
+  def valid_manager request_id
+    request = valid_request request_id
+    current_user.position_id == Settings.admin_id && current_user.unit_id == request.unit_id
   end
 
   def valid_request request_id

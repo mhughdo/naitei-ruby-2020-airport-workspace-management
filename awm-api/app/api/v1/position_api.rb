@@ -1,5 +1,9 @@
 class PositionApi < ApiV1
   namespace :position do
+    before do
+      authenticated
+    end
+
     desc "Get position types"
     get "/types" do
       types = Position.all.active

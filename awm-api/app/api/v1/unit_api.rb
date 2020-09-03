@@ -1,5 +1,9 @@
 class UnitApi < ApiV1
   namespace :unit do
+    before do
+      authenticated
+    end
+
     desc "Get unit types"
     get "/types" do
       types = Unit.all.active
