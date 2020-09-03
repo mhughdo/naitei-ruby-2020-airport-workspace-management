@@ -16,6 +16,8 @@ en:
     phone: Phone number is invalid
     update: Update failed
     invalid_user: Invalid user
+    already_approved: This request is already approved
+    already_rejected: This request is already rejected
   success:
     common: Successful
     login: Login successfully

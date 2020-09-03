@@ -334,6 +334,7 @@ DEPENDENCIES
   hirb
   jwt (= 2.2.1)
   listen (~> 3.2)
+  loofah (= 2.6.0)
   mysql2 (>= 0.4.4)
   puma (~> 4.1)
   rack-cors

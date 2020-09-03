@@ -10,7 +10,13 @@ class WorkTime < ApplicationRecord
   delegate :name, to: :shift, prefix: true
 
   validates :time_start, presence: true,
-    allow_nil: false
+    allow_nil: true
   validates :time_end, presence: true,
+    allow_nil: true
+  validates :day, presence: true,
+    allow_nil: false
+  validates :month, presence: true,
+    allow_nil: false
+  validates :year, presence: true,
     allow_nil: false
 end
