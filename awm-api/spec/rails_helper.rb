@@ -4,6 +4,7 @@ require 'rspec/rails'
 require 'spec_helper'
 require 'shoulda/matchers'
 require 'database_cleaner/active_record'
+Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 include ActiveJob::TestHelper
 
 FactoryBot::SyntaxRunner.class_eval do
@@ -23,7 +24,7 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   config.use_transactional_fixtures = false
-
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api\/v1/
   config.filter_rails_from_backtrace!
 end
 

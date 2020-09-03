@@ -20,7 +20,7 @@ RSpec.describe Gender, type: :model do
 
   describe "Associations" do
     it "should has many users" do
-      is_expected.to have_many(:users).dependent(:nullify)
+      is_expected.to have_many(:users).dependent :nullify
     end
   end
 end
