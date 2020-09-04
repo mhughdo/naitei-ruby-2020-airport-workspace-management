@@ -22,7 +22,8 @@ class UserApi < ApiV1
     end
     post "/signup" do
       data = valid_params(params, User::PARAMS)
-      data[:user_status_id] = 1
+      data[:user_status_id] = Settings.pending_status_id
+      data[:channel] = Time.now.to_i.to_s
       user = User.create data
       if user.valid?
         token = encode_token({user_id: user.id})

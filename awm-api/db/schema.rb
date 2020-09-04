@@ -10,7 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_14_040903) do
+ActiveRecord::Schema.define(version: 2020_09_04_062531) do
+
+  create_table "day_off_months", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "year"
+    t.integer "month"
+    t.integer "awol"
+    t.integer "leave"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_day_off_months_on_user_id"
+  end
+
+  create_table "day_off_years", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "year"
+    t.integer "day_off_left"
+    t.integer "awol"
+    t.integer "leave"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_day_off_years_on_user_id"
+  end
 
   create_table "genders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci", force: :cascade do |t|
     t.string "name"
@@ -90,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
     t.string "reset_digest"
     t.datetime "reset_sent_at"
     t.string "address"
+    t.string "channel"
     t.datetime "shift_updated_at"
     t.bigint "shift_id", null: false
     t.bigint "position_id", null: false
@@ -128,6 +151,8 @@ ActiveRecord::Schema.define(version: 2020_08_14_040903) do
     t.index ["work_time_status_id"], name: "index_work_times_on_work_time_status_id"
   end
 
+  add_foreign_key "day_off_months", "users"
+  add_foreign_key "day_off_years", "users"
   add_foreign_key "requests", "request_statuses"
   add_foreign_key "requests", "units"
   add_foreign_key "users", "genders"

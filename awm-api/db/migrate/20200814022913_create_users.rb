@@ -10,6 +10,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :reset_digest
       t.datetime :reset_sent_at
       t.string :address
+      t.string :channel
       t.datetime :shift_updated_at
       t.references :shift, null: false, foreign_key: true
       t.references :position, null: false, foreign_key: true
