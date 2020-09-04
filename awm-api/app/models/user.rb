@@ -23,14 +23,14 @@ class User < ApplicationRecord
     dependent: :destroy
   has_many :notifications, through: :passive_notifications, source: :receiver
   has_many :sent_notifications, through: :active_notifications, source: :sender
-  has_many :passive_notifications, class_name: Request.name,
+  has_many :passive_requests, class_name: Request.name,
     foreign_key: :approver_id,
     dependent: :destroy
-  has_many :active_notifications, class_name: Request.name,
+  has_many :active_requests, class_name: Request.name,
     foreign_key: :requester_id,
     dependent: :destroy
-  has_many :approved_requests, through: :passive_notifications, source: :approver
-  has_many :requests, through: :active_notifications, source: :requester
+  has_many :approved_requests, through: :passive_requests, source: :approver
+  has_many :requests, through: :active_requests, source: :requester
 
   scope :get_manager, ->{where position_id: Settings.manager_id}
   scope :get_unit, ->(unit_id){where(unit_id: unit_id)}
