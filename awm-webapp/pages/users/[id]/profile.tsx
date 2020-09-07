@@ -177,7 +177,7 @@ UserProfile.getInitialProps = async (pageContext): Promise<any> => {
     }
     return {auth, namespacesRequired: ['profile', 'common']}
   } catch (error) {
-    console.log(error.response)
+    console.log('Profile', error.response)
     return {auth: null}
   }
 }
