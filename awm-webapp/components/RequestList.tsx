@@ -44,7 +44,6 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
   const [createReqForm] = useForm()
   const [updateReqForm] = useForm()
   const {auth} = useAuth()
-  console.log('auth', auth)
   const isManager = auth?.position_name === 'Manager'
   const request_name = isManager ? 'all_requests' : 'personal_requests'
   const request_url = isManager ? '/v1/unit/requests' : '/v1/profile/requests'

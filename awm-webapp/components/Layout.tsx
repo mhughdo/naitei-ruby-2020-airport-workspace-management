@@ -85,7 +85,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           href={{
             pathname: '/users/[id]/profile',
             query: {
-              slug: auth?.id,
+              id: auth?.id,
             },
           }}
           as={`/users/${auth?.id}/profile`}>
@@ -97,7 +97,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           href={{
             pathname: '/users/[id]/settings',
             query: {
-              slug: auth?.id,
+              id: auth?.id,
             },
           }}
           as={`/users/${auth?.id}/settings`}>
