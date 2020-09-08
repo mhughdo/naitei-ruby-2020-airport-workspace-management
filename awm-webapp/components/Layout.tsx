@@ -3,12 +3,15 @@ import {jsx, Image, Flex, Box, Text} from 'theme-ui'
 import {Layout, Menu, Avatar, Dropdown, Badge, Button} from 'antd'
 import {
   MenuUnfoldOutlined,
+  GithubOutlined,
+  DatabaseOutlined,
   MenuFoldOutlined,
   DownOutlined,
   UpOutlined,
   BellOutlined,
   CalendarOutlined,
   ProjectOutlined,
+  PlusOutlined,
   CopyOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
@@ -20,6 +23,7 @@ import UKFLag from '../assets/svg/uk.svg'
 import VNFLag from '../assets/svg/vietnam.svg'
 
 const {Header, Sider, Content} = Layout
+const {SubMenu} = Menu
 
 const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
   t,
@@ -150,11 +154,23 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
           <Menu.Item key='stats' icon={<ProjectOutlined />}>
             {t('stats')}
           </Menu.Item>
-          <Menu.Item key='3' icon={<CopyOutlined />}>
-            <Link href='/request' as='/request'>
-              <a>{t('req')}</a>
-            </Link>
-          </Menu.Item>
+          <SubMenu key='requestMenu' icon={<CopyOutlined />} title={t('req')}>
+            <Menu.Item key='new' icon={<PlusOutlined />}>
+              <Link href='/request/new' as='/request/new'>
+                <a>{t('new_req')}</a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key='my_req' icon={<GithubOutlined />}>
+              <Link href='/request' as='/request'>
+                <a>{t('my_req')}</a>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key='all' icon={<DatabaseOutlined />}>
+              <Link href='/request/all' as='/request/all'>
+                <a>{t('all_req')}</a>
+              </Link>
+            </Menu.Item>
+          </SubMenu>
         </Menu>
       </Sider>
       <Layout>

@@ -9,7 +9,6 @@ import {
   Modal,
   Input,
   Form,
-  DatePicker,
   message,
   Space,
   Tooltip,
@@ -23,7 +22,6 @@ import {formatDate} from '@utils/date'
 import axios from 'utils/axios'
 import {useState} from 'react'
 import {useForm} from 'antd/lib/form/Form'
-import moment from 'moment'
 import {useAuth} from '@providers/Auth'
 import compareAsc from 'date-fns/compareAsc'
 
@@ -34,12 +32,10 @@ const StatusColors = {
 }
 
 const RequestList: NextPage<WithTranslation> = ({t}) => {
-  const [createModalVisible, setCreateModalVisible] = useState<boolean>(false)
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false)
   const [updateConfirmLoading, setUpdateConfirmLoading] = useState<boolean>(
     false
   )
-  const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
   const [selectedID, setSelectedID] = useState<number>(null)
   const [createReqForm] = useForm()
   const [updateReqForm] = useForm()
@@ -54,30 +50,6 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         url: request_url,
         method: 'get',
       })
-    }
-  )
-
-  const [createRequest] = useMutation(
-    async ({reason, absence_day}: any) => {
-      await axios({
-        url: '/v1/requests/new',
-        method: 'post',
-        data: {
-          reason,
-          absence_day: Math.floor(absence_day / 1000),
-        },
-      })
-    },
-    {
-      onError: (err, _, rollback: () => any) => {
-        message.error(t('error'))
-      },
-      onSuccess: () => {
-        message.success(t('create_success'))
-      },
-      onSettled: () => {
-        queryCache.invalidateQueries(request_name)
-      },
     }
   )
 
@@ -146,24 +118,6 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
 
   if (isError) {
     message.error(t('error'))
-  }
-
-  const handleCreateRequest = async () => {
-    try {
-      setConfirmLoading(true)
-      await createReqForm.validateFields()
-      const fieldsValue = createReqForm.getFieldsValue()
-      const {reason, absence_day} = fieldsValue
-      await createRequest({
-        reason,
-        absence_day: new Date(absence_day).getTime(),
-      })
-      setConfirmLoading(false)
-      setCreateModalVisible(false)
-    } catch (error) {
-      setConfirmLoading(false)
-      message.error(t('error'))
-    }
   }
 
   const handleUpateRequest = async () => {
@@ -305,53 +259,6 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         }}
         title={t('page_header')}
       />
-      <Box
-        sx={{
-          mb: 3,
-          display: 'flex',
-          justifyContent: 'end',
-        }}>
-        <Button
-          type='primary'
-          onClick={() => {
-            createReqForm.resetFields()
-            setCreateModalVisible(true)
-          }}>
-          {t('create_request')}
-        </Button>
-      </Box>
-      <Modal
-        title={t('create_request')}
-        visible={createModalVisible}
-        onOk={handleCreateRequest}
-        confirmLoading={confirmLoading}
-        onCancel={() => setCreateModalVisible(false)}>
-        <Form form={createReqForm} layout='vertical'>
-          <Form.Item
-            name='reason'
-            label={t('reason')}
-            rules={[
-              {
-                required: true,
-                message: t('please_input'),
-              },
-            ]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name='absence_day' label={t('day')}>
-            <DatePicker
-              disabledDate={(current) => {
-                return (
-                  current && current < moment().subtract(1, 'd').endOf('day')
-                )
-              }}
-              sx={{
-                width: '100%',
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
       <Modal
         title={t('update_request')}
         visible={updateModalVisible}

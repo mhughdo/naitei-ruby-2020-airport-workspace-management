@@ -5,5 +5,8 @@
   "my_profile": "Trang cá nhân",
   "sign_out": "Đăng xuất",
   "settings": "Cài đặt",
-  "error": "Đã có lỗi xảy ra"
+  "error": "Đã có lỗi xảy ra",
+  "new_req": "Tạo yêu cầu mới",
+  "my_req": "Yêu cầu của tôi",
+  "all_req": "Tất cả yêu cầu"
 }

@@ -1,7 +1,17 @@
 import React from 'react'
+import {Box} from 'theme-ui'
+import NewRequest from '@components/NewRequest'
 
-const NewRequest = () => {
-  return <Box>new</Box>
+const NewRequestPage = () => {
+  return (
+    <Box>
+      <NewRequest />
+    </Box>
+  )
 }
 
-export default NewRequest
+NewRequestPage.getInitialProps = (): any => ({
+  namespacesRequired: ['request'],
+})
+
+export default NewRequestPage

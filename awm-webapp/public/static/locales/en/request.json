@@ -3,7 +3,6 @@
   "requester": "Requester",
   "day": "Day",
   "reason": "Reason",
-  "unit": "Unit",
   "approver": "Approver",
   "status": "Status",
   "comment": "Comment",
@@ -18,5 +17,17 @@
   "edit": "Edit",
   "reject": "Reject",
   "approve": "Approve",
-  "error": "Unexpected error occurred"
+  "error": "Unexpected error occurred",
+  "new_req": "New request",
+  "all_req": "All requests",
+  "my_req": "My request",
+  "name": "Name",
+  "unit": "Unit",
+  "position": "Position",
+  "yesterday": "Yesterday",
+  "today": "Today",
+  "3-days": "3 days",
+  "1-week": "1 Week",
+  "absence_days": "Absence days",
+  "required_input": "Please input your {{inputName}}"
 }
