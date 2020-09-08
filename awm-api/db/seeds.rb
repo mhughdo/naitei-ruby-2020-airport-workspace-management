@@ -35,7 +35,8 @@ Unit.create(name: "BookingManagement", description: "blabla")
 
 WorkTimeStatus.create(name: "Late")
 WorkTimeStatus.create(name: "On Time")
-WorkTimeStatus.create(name: "Absence")
+WorkTimeStatus.create(name: "AWOL")
+WorkTimeStatus.create(name: "Leave")
 
 User.create(
   name: "Admin",
@@ -63,6 +64,7 @@ User.create(
     password_confirmation: password,
     address: "Ha Noi",
     phone: "0123456789",
+    channel: Time.now.to_i.to_s,
     shift_id: Faker::Number.between(from: 1, to: 2),
     position_id: Faker::Number.between(from: 1, to: 3),
     unit_id: Faker::Number.between(from: 1, to: 6),
@@ -71,6 +73,14 @@ User.create(
     birthday: Time.now.to_i.to_s << "000"
   )
   current_month = Time.now.month
+  day_off_left = Faker::Number.between(from: 1, to: 9)
+  DayOffYear.create(
+    year: 2020,
+    day_off_left: day_off_left,
+    leave: current_month - day_off_left,
+    awol: Faker::Number.between(from: 1, to: 5),
+    user_id: user.id
+  )
 
   current_month.times do |month|
     days = 0
@@ -82,6 +92,14 @@ User.create(
     else
       days = 29
     end
+
+    DayOffMonth.create(
+      year: 2020,
+      month: month + 1,
+      awol: Faker::Number.between(from: 1, to: 2),
+      leave: Faker::Number.between(from: 1, to: 2),
+      user_id: user.id
+    )
     days = Time.now.day if month + 1 == current_month
 
     days.times do |day|

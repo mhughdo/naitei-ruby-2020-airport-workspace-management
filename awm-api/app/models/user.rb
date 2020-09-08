@@ -55,6 +55,8 @@ class User < ApplicationRecord
     allow_nil: true
   validates :phone, presence: true,
     allow_nil: true
+  validates :channel, presence: true,
+    allow_nil: false
 
   before_save :downcase_email
 

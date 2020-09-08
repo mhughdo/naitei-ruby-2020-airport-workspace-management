@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :user, aliases: [:receiver, :sender, :requester, :approver] do
     name {Faker::Name.name}
     email {Faker::Internet.email}
+    channel {Time.now.to_i.to_s}
     birthday {Faker::Number.number(digits: 10).to_s} 
     password {Settings.password_test}
     password_confirmation {Settings.password_test}
