@@ -24,5 +24,7 @@
   "workspace_settings": "Cài đặt workspace",
   "update_sucess": "Cập nhật profile thành công",
   "error": "Đã có lỗi xảy ra",
-  "unauthorized": "Bạn không có quyền để thực hiện hành động này!"
+  "unauthorized": "Bạn không có quyền để thực hiện hành động này!",
+  "today": "Ngày hôm nay",
+  "3-days": "3 ngày"
 }

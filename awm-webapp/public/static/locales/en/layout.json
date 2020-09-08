@@ -5,5 +5,8 @@
   "my_profile": "My Profile",
   "sign_out": "Sign out",
   "settings": "Settings",
-  "error": "Unexpected error occurred"
+  "error": "Unexpected error occurred",
+  "new_req": "New request",
+  "my_req": "My request",
+  "all_req": "All requests"
 }

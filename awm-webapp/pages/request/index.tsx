@@ -1,10 +1,10 @@
 import {Box} from 'theme-ui'
-import RequestList from 'components/RequestList'
+import MyRequest from '@components/MyRequest'
 
 const Requests = () => {
   return (
     <Box>
-      <RequestList />
+      <MyRequest />
     </Box>
   )
 }

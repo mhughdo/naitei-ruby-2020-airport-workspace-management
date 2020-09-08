@@ -18,5 +18,16 @@
   "edit": "sửa",
   "reject": "Từ chối",
   "approve": "Chấp thuận",
-  "error": "Đã có lỗi xảy ra"
+  "error": "Đã có lỗi xảy ra",
+  "new_req": "Tạo yêu cầu xin nghỉ",
+  "all_req": "Tất cả yêu cầu",
+  "my_req": "Yêu cầu của tôi",
+  "name": "Tên",
+  "position": "Vị trí",
+  "today": "Hôm nay",
+  "yesterday": "Hôm qua",
+  "3-days": "3 ngày",
+  "1-week": "1 tuần",
+  "absence_days": "Ngày nghỉ",
+  "required_input": "Xin vui lòng nhập {{inputName}}"
 }
