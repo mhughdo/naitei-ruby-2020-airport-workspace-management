@@ -29,5 +29,5 @@ pending_status_id: 1
 approved_status_id: 2
 rejected_status_id: 3
 admin_account_id: 1
-absence_status_id: 3
+absence_status_id: 4
 password_test: "123456"

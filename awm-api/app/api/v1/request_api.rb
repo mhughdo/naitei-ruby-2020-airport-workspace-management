@@ -31,6 +31,25 @@ class RequestApi < ApiV1
         absence_days = request.absence_days.split(",")
         absence_days.each do |absence_day|
           time = Time.zone.at(absence_day.to_i)
+          if time < Time.now.to_i
+            worktime = WorkTime.find_by(user_id: request.requester_id).filter_time(time.year, time.month, time.day)[0]
+            worktime.update!(
+              work_time_status_id: Settings.absence_status_id,
+              time_start: nil,
+              time_end: nil
+            )
+          else
+            WorkTime.create!(
+              user_id: request.requester_id,
+              shift_id: request.requester.try(:shift_id),
+              work_time_status_id: Settings.absence_status_id,
+              time_start: nil,
+              time_end: nil,
+              day: time.day,
+              month: time.month,
+              year: time.year
+            )
+          end
           update_day_off(request.requester_id, time.year, time.month)
         end
       end
@@ -84,7 +103,7 @@ class RequestApi < ApiV1
           absence_days.each do |absence_day|
             time = Time.zone.at(absence_day.to_i)
             if time < Time.now.to_i
-              worktime = WorkTime.filter_time(time.year, time.month, time.day)[0]
+              worktime = WorkTime.find_by(user_id: request.requester_id).filter_time(time.year, time.month, time.day)[0]
               worktime.update!(
                 work_time_status_id: Settings.absence_status_id,
                 time_start: nil,

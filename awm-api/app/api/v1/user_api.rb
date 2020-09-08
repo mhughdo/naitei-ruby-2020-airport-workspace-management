@@ -89,6 +89,15 @@ class UserApi < ApiV1
         error!(I18n.t("errors.update"), :bad_request)
       end
     end
+
+    desc "Only Admin can get all users"
+    get "/" do
+      if authorized_one_of(%w(Admin))
+        return render_success_response(:ok, PrivateUserFormat, User.all, I18n.t("success.common"))
+      end
+
+      error! I18n.t("errors.not_allowed"), :forbidden
+    end
   end
   # rubocop:enable Metrics/BlockLength
 end
