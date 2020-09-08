@@ -17,7 +17,7 @@ class Request < ApplicationRecord
   validates :reason, presence: true,
     length: {maximum: Settings.validations.request.reason.max_length},
     allow_nil: false
-  validates :absence_day, presence: true,
+  validates :absence_days, presence: true,
     allow_nil: false
   validates :comment, presence: true,
     length: {maximum: Settings.validations.request.comment.max_length},

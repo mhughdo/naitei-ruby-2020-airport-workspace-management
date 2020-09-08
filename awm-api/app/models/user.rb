@@ -15,6 +15,8 @@ class User < ApplicationRecord
   belongs_to :unit
   belongs_to :gender
   has_many :work_times, dependent: :destroy
+  has_many :day_off_years, dependent: :destroy
+  has_many :day_off_months, dependent: :destroy
   has_many :passive_notifications, class_name: Notification.name,
     foreign_key: :sender_id,
     dependent: :destroy

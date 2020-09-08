@@ -18,4 +18,17 @@ module RequestHelper
     error!(I18n.t("errors.request_id_not_found"), :bad_request) unless request
     request
   end
+
+  def update_day_off requester_id, year, month
+    requester = User.find_by id: requester_id
+    day_off_year = requester.day_off_years.filter_time(year)[0]
+    day_off_year.update!(
+      day_off_left: day_off_year.day_off_left - 1,
+      awol: day_off_year.awol + 1
+    )
+    day_off_month = requester.day_off_months.filter_time(year, month)[0]
+    day_off_month.update!(
+      awol: day_off_month.awol + 1
+    )
+  end
 end
