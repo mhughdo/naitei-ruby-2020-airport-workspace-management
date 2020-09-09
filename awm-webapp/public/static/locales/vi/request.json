@@ -29,5 +29,8 @@
   "3-days": "3 ngày",
   "1-week": "1 tuần",
   "absence_days": "Ngày nghỉ",
-  "required_input": "Xin vui lòng nhập {{inputName}}"
+  "required_input": "Xin vui lòng nhập {{inputName}}",
+  "y": "Có",
+  "n": "Không",
+  "rus": "Bạn có chắc muốn {{action}} yêu cầu này?"
 }

@@ -22,7 +22,8 @@
       "@utils/*": ["utils/*"],
       "@providers/*": ["providers/*"],
       "@hocs/*": ["hocs/*"]
-    }
+    },
+    "downlevelIteration": true
   },
   "include": [
     "next-env.d.ts",

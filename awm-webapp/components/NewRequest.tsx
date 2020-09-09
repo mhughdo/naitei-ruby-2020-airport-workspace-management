@@ -66,6 +66,7 @@ const NewRequest = ({t}) => {
       },
       onSuccess: () => {
         message.success(t('create_success'))
+        form.resetFields()
       },
       onSettled: () => {
         queryCache.invalidateQueries('my_request')

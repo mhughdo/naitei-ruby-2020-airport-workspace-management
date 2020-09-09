@@ -165,11 +165,13 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                 <a>{t('my_req')}</a>
               </Link>
             </Menu.Item>
-            <Menu.Item key='all' icon={<DatabaseOutlined />}>
-              <Link href='/request/all' as='/request/all'>
-                <a>{t('all_req')}</a>
-              </Link>
-            </Menu.Item>
+            {auth?.position_name === 'Manager' && (
+              <Menu.Item key='all' icon={<DatabaseOutlined />}>
+                <Link href='/request/all' as='/request/all'>
+                  <a>{t('all_req')}</a>
+                </Link>
+              </Menu.Item>
+            )}
           </SubMenu>
         </Menu>
       </Sider>
