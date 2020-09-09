@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable react/display-name */
 /** @jsx jsx */
 import {jsx, Box, Text} from 'theme-ui'
@@ -13,17 +15,13 @@ import {
   Space,
   Tooltip,
 } from 'antd'
-import {CheckOutlined, CloseOutlined, EditOutlined} from '@ant-design/icons'
-import {withTranslation} from 'i18n'
-import {NextPage} from 'next'
-import {WithTranslation} from 'next-i18next'
+import {EditOutlined, PlusOutlined} from '@ant-design/icons'
+import {withTranslation, Router} from 'i18n'
 import {queryCache, useMutation, useQuery} from 'react-query'
 import {formatDate} from '@utils/date'
 import axios from 'utils/axios'
 import {useState} from 'react'
 import {useForm} from 'antd/lib/form/Form'
-import {useAuth} from '@providers/Auth'
-import compareAsc from 'date-fns/compareAsc'
 
 const StatusColors = {
   Approved: 'green',
@@ -31,23 +29,19 @@ const StatusColors = {
   Rejected: 'red',
 }
 
-const RequestList: NextPage<WithTranslation> = ({t}) => {
+const RequestList = ({t}) => {
   const [updateModalVisible, setUpdateModalVisible] = useState<boolean>(false)
   const [updateConfirmLoading, setUpdateConfirmLoading] = useState<boolean>(
     false
   )
   const [selectedID, setSelectedID] = useState<number>(null)
-  const [createReqForm] = useForm()
   const [updateReqForm] = useForm()
-  const {auth} = useAuth()
-  const isManager = auth?.position_name === 'Manager'
-  const request_name = isManager ? 'all_requests' : 'personal_requests'
-  const request_url = isManager ? '/v1/unit/requests' : '/v1/profile/requests'
+
   const {isLoading, data, isFetching, isError} = useQuery(
-    request_name,
+    'my_request',
     async () => {
       return axios({
-        url: request_url,
+        url: '/v1/profile/requests',
         method: 'get',
       })
     }
@@ -71,47 +65,7 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         message.success(t('update_success'))
       },
       onSettled: () => {
-        queryCache.invalidateQueries(request_name)
-      },
-    }
-  )
-
-  const [approve] = useMutation(
-    async ({id}: any) => {
-      await axios({
-        url: `/v1/requests/${id}/approve`,
-        method: 'put',
-      })
-    },
-    {
-      onError: (err, _, rollback: () => any) => {
-        message.error(t('error'))
-      },
-      onSuccess: () => {
-        message.success(t('approve_success'))
-      },
-      onSettled: () => {
-        queryCache.invalidateQueries(request_name)
-      },
-    }
-  )
-
-  const [reject] = useMutation(
-    async ({id}: any) => {
-      await axios({
-        url: `/v1/requests/${id}/reject`,
-        method: 'put',
-      })
-    },
-    {
-      onError: (err, _, rollback: () => any) => {
-        message.error(t('error'))
-      },
-      onSuccess: () => {
-        message.success(t('reject_success'))
-      },
-      onSettled: () => {
-        queryCache.invalidateQueries(request_name)
+        queryCache.invalidateQueries('my_request')
       },
     }
   )
@@ -150,11 +104,25 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
     },
     {
       title: t('day'),
-      dataIndex: 'absence_day',
-      key: 'absence_day',
-      render: (text) => <Text>{formatDate(Number(text * 1000))}</Text>,
-      sorter: (a, b) => compareAsc(a.absence_day * 1000, b.absence_day * 1000),
-      // sortDirections: ['descend', 'ascend'],
+      dataIndex: 'absence_days',
+      key: 'absence_days',
+      render: (text, record) => {
+        const absence_days = record.absence_days.split(',') as string[]
+        const formatDays = [...new Set(absence_days.filter(Boolean))].map(
+          (day: string) => {
+            return formatDate(Number(day) * 1000)
+          }
+        )
+
+        // eslint-disable-next-line operator-linebreak
+        const daysText =
+          formatDays.length > 1
+            ? `${formatDays[0].slice(0, 2)}-${
+                formatDays[formatDays.length - 1]
+              }`
+            : formatDays[0]
+        return <Text>{daysText}</Text>
+      },
     },
     {
       title: t('reason'),
@@ -225,21 +193,6 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
                 </Button>
               </Tooltip>
             )}
-            {isManager && record.request_status_name === 'Pending' && (
-              <>
-                <Tooltip placement='top' title={t('approve')}>
-                  <Button type='link' onClick={() => approve({id: record.id})}>
-                    <CheckOutlined />
-                  </Button>
-                </Tooltip>
-
-                <Tooltip placement='top' title={t('reject')}>
-                  <Button type='link' onClick={() => reject({id: record.id})}>
-                    <CloseOutlined />
-                  </Button>
-                </Tooltip>
-              </>
-            )}
           </Space>
         )
       },
@@ -259,6 +212,17 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         }}
         title={t('page_header')}
       />
+      <Box
+        sx={{
+          mb: 3,
+        }}>
+        <Button
+          type='primary'
+          icon={<PlusOutlined />}
+          onClick={() => Router.push('/request/new')}>
+          {t('new_req')}
+        </Button>
+      </Box>
       <Modal
         title={t('update_request')}
         visible={updateModalVisible}
@@ -288,13 +252,10 @@ const RequestList: NextPage<WithTranslation> = ({t}) => {
         columns={columns}
         loading={isLoading}
         dataSource={data?.data?.data}
+        pagination={false}
       />
     </Box>
   )
 }
-
-// RequestList.getInitialProps = (): any => ({
-//   namespacesRequired: ['request', 'common'],
-// })
 
 export default withTranslation(['request', 'common'])(RequestList)
