@@ -322,7 +322,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bcrypt
+  bcrypt (= 3.1.15)
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
@@ -341,17 +341,21 @@ DEPENDENCIES
   jwt (= 2.2.1)
   listen (~> 3.2)
   loofah (= 2.6.0)
+  minitest (= 5.14.1)
   mysql2 (>= 0.4.4)
-  puma (~> 4.1)
+  nio4r (= 2.5.2)
+  public_suffix (= 4.0.5)
+  puma (= 4.3.5)
   pusher
   rack-cors
   rails (~> 6.0.3, >= 6.0.3.2)
   rails-i18n
   rails_best_practices
   rspec-rails
-  rubocop
+  rubocop (= 0.89.1)
   rubocop-rails (~> 2.3.2)
   selenium-webdriver
+  sexp_processor (= 4.15.0)
   shoulda-matchers
   simplecov
   spring (= 2.1.0)

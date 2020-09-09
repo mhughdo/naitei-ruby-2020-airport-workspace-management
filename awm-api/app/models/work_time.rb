@@ -5,6 +5,7 @@ class WorkTime < ApplicationRecord
 
   scope :filter_year, ->(year){where year: year}
   scope :filter_month, ->(month){where month: month}
+  scope :filter_time, ->(year, month, day){where year: year, month: month, day: day}
 
   delegate :name, to: :work_time_status, prefix: true
   delegate :name, to: :shift, prefix: true
