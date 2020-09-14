@@ -8,5 +8,12 @@
   "error": "Unexpected error occurred",
   "new_req": "New request",
   "my_req": "My request",
-  "all_req": "All requests"
+  "all_req": "All requests",
+  "change_avatar": "Change avatar",
+  "change_avatar_desc": "Change your profile picture",
+  "remove_avatar": "Remove avatar",
+  "wrong_format": "You can only upload JPG/PNG file!",
+  "wrong_size": "Image must smaller than 3MB!",
+  "no_file": "No file chosen",
+  "upload_success": "Change avatar successfully"
 }

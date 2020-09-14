@@ -8,5 +8,12 @@
   "error": "Đã có lỗi xảy ra",
   "new_req": "Tạo yêu cầu mới",
   "my_req": "Yêu cầu của tôi",
-  "all_req": "Tất cả yêu cầu"
+  "all_req": "Tất cả yêu cầu",
+  "change_avatar": "Thay ảnh đại diện",
+  "change_avatar_desc": "Thay đổi ảnh đại diện của bạn.",
+  "remove_avatar": "Xoá ảnh đại diện",
+  "wrong_format": "Chỉ có thế upload được ảnh JPG/PNG",
+  "wrong_size": "Kích cỡ ảnh phải nhỏ hơn 3MB!",
+  "no_file": "Không có file nào được chọn".
+  "upload_success": "Thay ảnh đại diện thành công",
 }

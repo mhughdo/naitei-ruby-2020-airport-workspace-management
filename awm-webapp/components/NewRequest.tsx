@@ -80,9 +80,11 @@ const NewRequest = ({t}) => {
       setLoading(true)
       await form.validateFields()
       const {reason, absence_days} = values
-      const formattedDays = absence_days.map(
-        (day) => `${Math.floor(day.valueOf() / 1000)}`
-      )
+      const formattedDays = [
+        ...new Set(
+          absence_days.map((day) => `${Math.floor(day.valueOf() / 1000)}`)
+        ),
+      ]
       await createRequest({
         reason,
         absence_days: formattedDays,

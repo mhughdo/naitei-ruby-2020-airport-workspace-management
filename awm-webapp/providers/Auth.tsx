@@ -25,6 +25,7 @@ export type User = {
   user_status_name: string
   birthday: string
   phone: string
+  avatarURL: string
 } | null
 
 type AuthContext = {
@@ -60,9 +61,9 @@ export const AuthProvider = ({
   const logout = () => {
     destroyCookie(null, 'token')
     destroyCookie(null, 'auth')
-    setAuth(null)
-    setAuthenticated(false)
-    router.push('/login')
+    // setAuth(null)
+    // setAuthenticated(false)
+    window.location.href = '/login'
   }
 
   if (authenticated && !isLoading) {
