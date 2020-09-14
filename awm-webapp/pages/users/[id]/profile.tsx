@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /** @jsx jsx */
 import {jsx, Box, Container, Text} from 'theme-ui'
 import {Card, Descriptions, Avatar, Button, Result} from 'antd'
@@ -43,7 +44,10 @@ const UserProfile: NextPage<WithTranslation & {auth: User}> = ({t, auth}) => {
                   sx={{
                     mb: 5,
                   }}
-                  src='https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+                  src={
+                    auth?.avatarURL ||
+                    'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+                  }
                 />
                 <Text
                   sx={{

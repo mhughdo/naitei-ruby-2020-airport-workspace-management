@@ -36,10 +36,10 @@ Home.getInitialProps = async (pageContext): Promise<any> => {
 
     // console.log(currentMonth, currentYear)
     // console.log(workingData)
-    return {preWorkingData}
+    return {preWorkingData, namespacesRequired: ['profile', 'common']}
   } catch (error) {
     console.log(error)
-    return {}
+    return {namespacesRequired: ['profile', 'common']}
   }
 }
 

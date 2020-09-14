@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import {jsx, Box} from 'theme-ui'
+import React, {useState} from 'react'
 import {Calendar, Badge, PageHeader, Tag, Skeleton} from 'antd'
 import {withTranslation} from 'i18n'
 import {WithTranslation} from 'next-i18next'
 import format from 'date-fns/format'
-import {useState} from 'react'
 import useWorkingData from 'hooks/useWorkingData'
 import getMonth from 'date-fns/getMonth'
 import {getYear} from 'date-fns'
@@ -26,7 +26,7 @@ type WorkingData = [
   }
 ]
 
-const HomeComponent: NextPage<
+const HomeComponent: React.FC<
   WithTranslation & {preWorkingData: WorkingData}
 > = ({t, preWorkingData}) => {
   const [year, setYear] = useState<number>(getYear(new Date()))
@@ -157,9 +157,5 @@ const HomeComponent: NextPage<
     </Box>
   )
 }
-
-HomeComponent.getInitialProps = (): any => ({
-  namespacesRequired: ['profile', 'common'],
-})
 
 export default withTranslation(['home', 'common'])(HomeComponent)

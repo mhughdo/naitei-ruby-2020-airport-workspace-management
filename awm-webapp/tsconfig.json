@@ -31,6 +31,6 @@
     "**/*.tsx",
     "pages/_document.tsx",
     "i18n.ts"
-  ],
+, "utils/CloudinaryService.js"  ],
   "exclude": ["node_modules"]
 }

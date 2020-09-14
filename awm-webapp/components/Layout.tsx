@@ -1,7 +1,20 @@
+/* eslint-disable operator-linebreak */
 /** @jsx jsx */
 import {jsx, Image, Flex, Box, Text} from 'theme-ui'
-import {Layout, Menu, Avatar, Dropdown, Badge, Button} from 'antd'
 import {
+  Layout,
+  Menu,
+  Avatar,
+  Dropdown,
+  Badge,
+  Button,
+  Modal,
+  Space,
+  message,
+  Upload,
+} from 'antd'
+import {
+  CloudUploadOutlined,
   MenuUnfoldOutlined,
   GithubOutlined,
   DatabaseOutlined,
@@ -14,11 +27,16 @@ import {
   PlusOutlined,
   CopyOutlined,
   SettingOutlined,
+  UserOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons'
 import React, {useState} from 'react'
 import {WithTranslation, withTranslation, Link} from 'i18n'
 import {useAuth} from '@providers/Auth'
 import {setCookie} from 'nookies'
+import axios from 'axios'
+import authAxios from '@utils/axios'
+import {queryCache, useMutation} from 'react-query'
 import UKFLag from '../assets/svg/uk.svg'
 import VNFLag from '../assets/svg/vietnam.svg'
 
@@ -34,6 +52,11 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false)
   const [language, setLanguage] = useState<string>(i18n.language)
   const {auth, logout} = useAuth()
+  const uploadURL = 'https://examreg.hughdo.dev/api/upload_avatar'
+  const [avatarModalVisible, setAvatarModalVisible] = useState<boolean>(false)
+  const [confirmLoading, setConfirmLoading] = useState<boolean>(false)
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const [fileList, setFileList] = useState<Array<any>>([])
 
   const toggle = () => {
     setCollapsed(!collapsed)
@@ -53,6 +76,101 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
       secure: true,
     })
   }
+  const [changeAvatar] = useMutation(
+    async ({avatarURL}: any) => {
+      await authAxios({
+        url: '/v1/profile/avatar',
+        method: 'put',
+        data: {
+          avatarURL,
+        },
+      })
+    },
+    {
+      onError: (err, _, rollback: () => any) => {
+        message.error(t('error'))
+      },
+      onSuccess: () => {
+        message.success(t('upload_success'))
+      },
+      onSettled: () => {
+        queryCache.invalidateQueries('user_profile')
+      },
+    }
+  )
+
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+    if (!isJpgOrPng) {
+      message.error(t('wrong_format'))
+    }
+    const isLt3M = file.size / 1024 / 1024 < 3
+    if (!isLt3M) {
+      message.error(t('wrong_size'))
+    }
+    return false
+  }
+
+  const getBase64 = (file, callback) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => callback(reader.result)
+  }
+
+  const handleChange = (info) => {
+    let fileList = [...info.fileList]
+    fileList = fileList.slice(-1)
+    // console.log(fileList)
+    getBase64(info.file, (url) => {
+      setImageUrl(url)
+    })
+    setFileList(fileList)
+  }
+
+  const uploadFile = async (signedRequest, fileType) => {
+    try {
+      await axios.put(signedRequest, fileList[0].originFileObj, {
+        headers: {
+          'Content-Type': fileType,
+        },
+      })
+    } catch (error) {
+      message.error(t('error'))
+      setConfirmLoading(false)
+    }
+  }
+
+  const handleOk = async () => {
+    try {
+      if (fileList.length === 0) {
+        message.error(t('no_file'))
+        return
+      }
+      setConfirmLoading(true)
+      const file = fileList[0]
+      const {data} = await axios.get(
+        process.env.NODE_ENV === 'development'
+          ? 'http://localhost:3000/api/sign-s3'
+          : '/sign-s3',
+        {
+          params: {
+            'file-name': file.name,
+            'file-type': file.type,
+          },
+        }
+      )
+      const {signedRequest, url: avatarURL} = data
+      await uploadFile(signedRequest, file.type)
+      await changeAvatar({avatarURL})
+      setConfirmLoading(false)
+      message.success(t('upload_success'))
+      setImageUrl(avatarURL)
+    } catch (error) {
+      setConfirmLoading(false)
+      message.error(t('error'))
+    }
+    // // setAvatarModalVisible(false)
+  }
 
   const DropdownMenuItem = (
     <Menu>
@@ -64,7 +182,10 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                 mr: 2,
                 mt: 1,
               }}
-              src='https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+              src={
+                auth?.avatarURL ||
+                'https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+              }
             />
             <Box>
               <Text
@@ -73,12 +194,74 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                 }}>
                 {auth?.name}
               </Text>
-              <Text
+              {/* <Text
                 sx={{
                   fontSize: 0,
                 }}>
                 {auth?.email}
-              </Text>
+              </Text> */}
+              <Button
+                type='link'
+                onClick={() => setAvatarModalVisible(true)}
+                sx={{
+                  p: 0,
+                  height: 'auto',
+                }}>
+                {t('change_avatar')}
+              </Button>
+              <Modal
+                css={{
+                  maxWidth: '720',
+                  minWidth: '500px',
+                }}
+                title={t('change_avatar_desc')}
+                visible={avatarModalVisible}
+                onOk={handleOk}
+                confirmLoading={confirmLoading}
+                onCancel={() => {
+                  setFileList([])
+                  setImageUrl('')
+                  setAvatarModalVisible(false)
+                }}>
+                <Flex
+                  sx={{
+                    justifyContent: 'space-between',
+                  }}>
+                  <Space
+                    direction='vertical'
+                    sx={{
+                      justifyContent: 'center',
+                    }}>
+                    <Upload
+                      name='avatar'
+                      action={uploadURL}
+                      accept='.png, .jpg, .jpeg'
+                      multiple={false}
+                      fileList={fileList}
+                      onChange={handleChange}
+                      beforeUpload={beforeUpload}
+                      withCredentials>
+                      <Button type='text' icon={<CloudUploadOutlined />}>
+                        Change avatar
+                      </Button>
+                    </Upload>
+
+                    <Button type='text' icon={<DeleteOutlined />}>
+                      Remove avatar
+                    </Button>
+                  </Space>
+                  <Box>
+                    <Avatar
+                      size={128}
+                      src={
+                        imageUrl ||
+                        auth?.avatarURL ||
+                        'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+                      }
+                    />
+                  </Box>
+                </Flex>
+              </Modal>
             </Box>
           </Flex>
         </a>
@@ -274,7 +457,10 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                     ml: 5,
                   }}>
                   <Avatar
-                    src='https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+                    src={
+                      auth?.avatarURL ||
+                      'https://www.gravatar.com/avatar/86b862d65a8e66b9db99136cd16ff394?default=https%3A%2F%2Fcloud.digitalocean.com%2Favatars%2Fdefault1.png&amp;secure=true'
+                    }
                     size='large'
                   />
                   {dropdownVisible ? (

@@ -191,7 +191,7 @@ const ProfileSettings: NextPage<
           <Tabs tabPosition='left' size='middle'>
             <TabPane tab={t('basic_settings')} key='basic'>
               {userInfo ? (
-                isDisabled() ? (
+                auth.unit_name !== 'BA' ? (
                   <Box
                     sx={{
                       width: '60vw',
