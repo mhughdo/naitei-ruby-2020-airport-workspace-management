@@ -4,5 +4,8 @@
   "Shift 2": "Ca 2",
   "Shift 3": "Ca 3",
   "error": "Đã có lỗi xảy ra",
-  "absence": "Nghỉ"
+  "absence": "Nghỉ",
+  "awol": "AWOL",
+  "total_leave": "Số ngày nghỉ có phép",
+  "total_awol": "Số ngày nghỉ không phép"
 }

@@ -1,3 +1,2 @@
 /**/*/.DS_Store
-env/awm-db-secret.yml
-env/awm-mail-secret.yml
+env/*.yml

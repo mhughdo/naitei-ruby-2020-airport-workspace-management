@@ -151,7 +151,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
       const {data} = await axios.get(
         process.env.NODE_ENV === 'development'
           ? 'http://localhost:3000/api/sign-s3'
-          : '/sign-s3',
+          : '/api/sign-s3',
         {
           params: {
             'file-name': file.name,
@@ -163,7 +163,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
       await uploadFile(signedRequest, file.type)
       await changeAvatar({avatarURL})
       setConfirmLoading(false)
-      message.success(t('upload_success'))
+      // message.success(t('upload_success'))
       setImageUrl(avatarURL)
     } catch (error) {
       setConfirmLoading(false)
@@ -231,6 +231,7 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
                     direction='vertical'
                     sx={{
                       justifyContent: 'center',
+                      maxWidth: '50%',
                     }}>
                     <Upload
                       name='avatar'
@@ -335,7 +336,9 @@ const LayoutComponent: React.FunctionComponent<WithTranslation> = ({
             </Link>
           </Menu.Item>
           <Menu.Item key='stats' icon={<ProjectOutlined />}>
-            {t('stats')}
+            <Link href='/statistics' as='/statistics'>
+              <a>{t('stats')}</a>
+            </Link>
           </Menu.Item>
           <SubMenu key='requestMenu' icon={<CopyOutlined />} title={t('req')}>
             <Menu.Item key='new' icon={<PlusOutlined />}>

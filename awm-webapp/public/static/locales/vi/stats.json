@@ -1,0 +1,11 @@
+{
+  "month": "Tháng",
+  "year": "Năm",
+  "desc": "Thống kê thông tin của người dùng trong tháng {{month}} - năm {{year}}",
+  "approved": "Số request được chấp thuận",
+  "rejected": "Số request bị từ chối",
+  "absence": "Nghỉ",
+  "awol": "AWOL",
+  "total_leave": "Số ngày nghỉ có phép",
+  "total_awol": "Số ngày nghỉ không phép"
+}

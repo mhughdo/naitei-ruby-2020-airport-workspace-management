@@ -1,0 +1,11 @@
+{
+  "month": "Month",
+  "year": "Year",
+  "desc": "Statistics of user information in month {{month}} - year {{{year}}",
+  "approved": "Number of approved request",
+  "rejected": "Number of rejected request",
+  "absence": "Leave",
+  "awol": "AWOL",
+  "total_leave": "Total of Leave",
+  "total_awol": "Total of AWOL"
+}

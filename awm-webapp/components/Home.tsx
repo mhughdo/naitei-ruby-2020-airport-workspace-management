@@ -1,16 +1,26 @@
 /** @jsx jsx */
 import {jsx, Box} from 'theme-ui'
 import React, {useState} from 'react'
-import {Calendar, Badge, PageHeader, Tag, Skeleton} from 'antd'
+import {
+  Calendar,
+  Badge,
+  PageHeader,
+  Tag,
+  Skeleton,
+  Statistic,
+  Row,
+  Col,
+  Button,
+} from 'antd'
 import {withTranslation} from 'i18n'
 import {WithTranslation} from 'next-i18next'
 import format from 'date-fns/format'
 import useWorkingData from 'hooks/useWorkingData'
+import useDaysOff from 'hooks/useDaysOff'
 import getMonth from 'date-fns/getMonth'
-import {getYear} from 'date-fns'
-import {NextPage} from 'next'
+import getYear from 'date-fns/getYear'
 
-type WorkingStatus = 'On Time' | 'Late' | 'Absence'
+type WorkingStatus = 'On Time' | 'Late' | 'Leave' | 'AWOL'
 type Shift = 'Shift 1' | 'Shift 2' | 'Shift 3'
 
 type WorkingData = [
@@ -31,7 +41,12 @@ const HomeComponent: React.FC<
 > = ({t, preWorkingData}) => {
   const [year, setYear] = useState<number>(getYear(new Date()))
   const [month, setMonth] = useState<number>(getMonth(new Date()) + 1)
-  const {isLoading, data, error, isError, isFetching} = useWorkingData({
+  const {data, isFetching} = useWorkingData({
+    month,
+    year,
+  })
+
+  const {data: daysOffRes, isFetching: isDaysOffFetching} = useDaysOff({
     month,
     year,
   })
@@ -74,16 +89,30 @@ const HomeComponent: React.FC<
       const isOnTime = dateData?.work_time_status_name === 'On Time'
 
       if (!dateData?.time_start || !dateData?.time_end) {
-        if (dateData?.work_time_status_name === 'Absence') {
+        if (dateData?.work_time_status_name === 'Leave') {
           return (
             <Box>
-              <Tag color='orange'>{t(dateData.shift_name)}</Tag>
+              <Tag color='magenta'>{t(dateData.shift_name)}</Tag>
               <Badge
                 sx={{
                   display: 'block',
                 }}
-                status='warning'
+                status='error'
                 text={t('absence')}
+              />
+            </Box>
+          )
+        }
+        if (dateData?.work_time_status_name === 'AWOL') {
+          return (
+            <Box>
+              <Tag color='red'>{t(dateData.shift_name)}</Tag>
+              <Badge
+                sx={{
+                  display: 'block',
+                }}
+                status='error'
+                text={t('awol')}
               />
             </Box>
           )
@@ -109,12 +138,14 @@ const HomeComponent: React.FC<
 
       return (
         <Box>
-          <Tag color={isOnTime ? 'green' : 'red'}>{t(dateData.shift_name)}</Tag>
+          <Tag color={isOnTime ? 'green' : 'warning'}>
+            {t(dateData.shift_name)}
+          </Tag>
           <Badge
             sx={{
               display: 'block',
             }}
-            status={isOnTime ? 'success' : 'error'}
+            status={isOnTime ? 'success' : 'warning'}
             text={`${time_start} - ${time_end}`}
           />
         </Box>
@@ -138,6 +169,24 @@ const HomeComponent: React.FC<
         }}
         title={t('timesheet')}
       />
+      <Row
+        gutter={16}
+        sx={{
+          px: 5,
+        }}>
+        <Col span={6}>
+          <Statistic
+            title={t('total_leave')}
+            value={daysOffRes?.data?.data?.leave || '--'}
+          />
+        </Col>
+        <Col span={6}>
+          <Statistic
+            title={t('total_awol')}
+            value={daysOffRes?.data?.data?.awol || '--'}
+          />
+        </Col>
+      </Row>
       <Box
         sx={{
           p: 7,

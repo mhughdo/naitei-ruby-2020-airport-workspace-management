@@ -14,6 +14,6 @@
   "remove_avatar": "Xoá ảnh đại diện",
   "wrong_format": "Chỉ có thế upload được ảnh JPG/PNG",
   "wrong_size": "Kích cỡ ảnh phải nhỏ hơn 3MB!",
-  "no_file": "Không có file nào được chọn".
-  "upload_success": "Thay ảnh đại diện thành công",
+  "no_file": "Không có file nào được chọn",
+  "upload_success": "Thay ảnh đại diện thành công"
 }
